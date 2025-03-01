@@ -23,7 +23,7 @@
             padding: 20px;
         }
         
-        header {
+        /* header {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -54,8 +54,99 @@
             border-radius: 50%;
             margin-right: 10px;
             background-color: #e9ecef;
-        }
-        
+        } */
+        /* Header Styling */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #dee2e6;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo Styling */
+.logo h1 {
+    color: #0d6efd;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.logo span {
+    color: #6c757d;
+    font-size: 14px;
+}
+
+/* User Menu Container */
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Spacing between elements */
+}
+
+/* ChatBot Button */
+.btn.btn-outline {
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.3s ease-in-out;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn.btn-outline:hover {
+    background-color: #0b5ed7;
+    transform: scale(1.05); /* Slight button pop effect */
+}
+
+/* Profile Section */
+.profile {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #212529;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+.profile:hover {
+    color: #0d6efd;
+}
+
+/* Profile Avatar */
+.profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 8px;
+    background-color: #e9ecef;
+    transition: transform 0.3s ease-in-out;
+}
+
+.profile:hover img {
+    transform: scale(1.1); /* Slight zoom effect on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .user-menu {
+        margin-top: 10px;
+        gap: 10px;
+    }
+}
+
         .notification-badge {
             background-color: #dc3545;
             color: white;
@@ -361,18 +452,43 @@
             gap: 10px;
             margin-top: 20px;
         }
+        /* .btn.btn-outline { 
+    background-color: #0d6efd;
+    color: #fff;   Adjusted text color for better visibility 
+    border: none;
+    padding: 8px 16px;  
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    transition: background-color 0.3s;
+    text-decoration: none;
+}
+
+.btn.btn-outline:hover {
+    background-color: #0b5ed7; 
+} */
+
     </style>
 </head>
 <body>
-    <header>
+    <header class="header">
         <div class="logo">
             <h1>IPO Match</h1>
             <span>Connect, Invest, Grow</span>
         </div>
+        
         <div class="user-menu">
-            <img src="/api/placeholder/40/40" alt="User Avatar">
-            <span>Om Patel</span>
-            <div class="notification-badge">3</div>
+            <!-- Chatbot Button -->
+            <a href="chatbox.html" class="btn btn-outline">ChatBot</a>
+    
+            <!-- User Profile -->
+            <a href="profile.html" class="profile">
+                <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png" 
+                     alt="User Avatar">
+                <span>Om Patel</span>
+            </a>
         </div>
     </header>
     
