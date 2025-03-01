@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPO Investment Partnership Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3a5998;
+            --secondary: #4e71ba;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .menu-item {
+            margin-left: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            position: relative;
+        }
+        
+        .menu-icon {
+            font-size: 22px;
+        }
+        
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--danger);
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .main-content {
+            display: flex;
+            margin-top: 70px;
+            min-height: calc(100vh - 70px);
+        }
+        
+        .sidebar {
+            width: 270px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .profile-section {
+            margin-bottom: 20px;
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .profile-pic {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 24px;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .profile-name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .profile-status {
+            font-size: 14px;
+            color: var(--success);
+            margin-top: 3px;
+        }
+        
+        .profile-detail {
+            background-color: var(--light);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+        
+        .detail-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .detail-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .detail-label {
+            width: 40%;
+            font-weight: 500;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .detail-value {
+            width: 60%;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .stat-box {
+            flex: 1;
+            background-color: var(--light);
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            margin-right: 10px;
+        }
+        
+        .stat-box:last-child {
+            margin-right: 0;
+        }
+        
+        .stat-number {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 3px;
+        }
+        
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+        
+        .requests-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        
+        .section-header {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .tab-container {
+            margin-bottom: 15px;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 8px 15px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            font-weight: 500;
+        }
+        
+        .tab.active {
+            border-bottom: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .request-list {
+            overflow-y: auto;
+            flex: 1;
+        }
+        
+        .request-card {
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            background-color: #fcfcfc;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .request-card:hover {
+            background-color: #f7f7f7;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        
+        .requester-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .requester-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 16px;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .requester-name {
+            font-weight: 500;
+        }
+        
+        .request-type {
+            font-size: 13px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .request-type.pan {
+            background-color: var(--info);
+            color: white;
+        }
+        
+        .request-type.ipo {
+            background-color: var(--warning);
+            color: #333;
+        }
+        
+        .request-details {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .request-detail-row {
+            display: flex;
+            margin-bottom: 5px;
+        }
+        
+        .request-detail-label {
+            width: 40%;
+            color: #666;
+        }
+        
+        .request-detail-value {
+            width: 60%;
+            font-weight: 500;
+        }
+        
+        .request-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            margin-left: 10px;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--light);
+        }
+        
+        /* Chat System Styles */
+        .chat-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: none;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .chat-header {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .chat-back {
+            margin-right: 15px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .chat-with {
+            display: flex;
+            align-items: center;
+        }
+        
+        .chat-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 16px;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .chat-name {
+            font-weight: 500;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .message {
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .message-time {
+            font-size: 11px;
+            color: #999;
+            margin-top: 3px;
+        }
+        
+        .message.received {
+            background-color: #f0f2f5;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .message.sent {
+            background-color: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .message.sent .message-time {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .chat-input-container {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+        }
+        
+        .chat-send {
+            margin-left: 10px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+        }
+        .menu-link {
+    text-decoration: none;  /* Removes underline */
+    color: white;  /* Sets font color to white */
+}
+
+.menu-item {
+    font-size: 16px;  
+    font-weight: bold;
+    padding: 10px 15px;  /* Adds some spacing for better appearance */
+    transition: 0.3s ease-in-out;  /* Smooth transition effect */
+}
+
+.menu-item:hover {
+    color:#3a5998;  /* Changes text color on hover */
+    background-color: rgba(255, 255, 255, 0.2);  /* Light background on hover */
+    border-radius: 5px;  /* Slightly rounded edges */
+}
+
+        .chat-send:hover {
+            background-color: var(--secondary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">Ipo Match</div>
+            <div class="menu">
+                <a href="index.html" class="menu-link">
+                    <div class="menu-item">Home</div>
+                </a>
+                <a href="ipolisting.html" class="menu-link">
+                    <div class="menu-item">IPOs</div>
+                </a>
+                <a href="connection.html" class="menu-link">
+                    <div class="menu-item">Partnerships</div>
+                </a>
+                <a href="dashboard.html" class="menu-link">
+                    <div class="menu-item">Dashboard</div>
+                </a>
+                <a href="chatbox.html" class="menu-link">
+                    <div class="menu-item" id="openChat">
+                        <i class="fas fa-comments menu-icon"></i>
+                        <span class="badge">3</span>
+                    </div>
+                </a>
+                
+                <div class="menu-item">
+                    <i class="fas fa-bell menu-icon"></i>
+                    <span class="badge">5</span>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="profile-section">
+                    <div class="profile-header">
+                        <div class="profile-pic">RK</div>
+                        <div>
+                            <div class="profile-name">Rahul Kumar</div>
+                            <div class="profile-status">Verified Investor</div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-detail">
+                        <div class="detail-row">
+                            <div class="detail-label">PAN Number</div>
+                            <div class="detail-value">ABNPK4567Z</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Date of Birth</div>
+                            <div class="detail-value">15/08/1985</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Email</div>
+                            <div class="detail-value">rahul.k@example.com</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Phone</div>
+                            <div class="detail-value">+91 9876543210</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-row">
+                        <div class="stat-box">
+                            <div class="stat-number">12</div>
+                            <div class="stat-label">IPOs Applied</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">8</div>
+                            <div class="stat-label">Successful</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">5</div>
+                            <div class="stat-label">Partnerships</div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-detail">
+                        <div class="detail-row">
+                            <div class="detail-label">KYC Status</div>
+                            <div class="detail-value" style="color: var(--success);">Verified</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Account Type</div>
+                            <div class="detail-value">Premium</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Joined</div>
+                            <div class="detail-value">12/01/2023</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-area">
+                <div class="requests-section" id="requestsSection">
+                    <div class="section-header">
+                        <div>Partnership Requests</div>
+                        <div>
+                            <button class="btn btn-outline">View All</button>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-container">
+                        <div class="tabs">
+                            <div class="tab active" data-tab="incoming">Incoming (4)</div>
+                            <div class="tab" data-tab="outgoing">Outgoing (2)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="request-list">
+                        <div class="request-card" onclick="openChat('Vijay Singh')">
+                            <div class="request-header">
+                                <div class="requester-info">
+                                    <div class="requester-pic">VS</div>
+                                    <div>
+                                        <div class="requester-name">Vijay Singh</div>
+                                    </div>
+                                </div>
+                                <div class="request-type pan">PAN Investment</div>
+                            </div>
+                            
+                            <div class="request-details">
+                                <div class="request-detail-row">
+                                    <div class="request-detail-label">IPO Name</div>
+                                    <div class="request-detail-value">Tech Solutions Ltd.</div>
+                                </div>
+                                <div class="request-detail-row">
+                                    <div class="request-detail-label">Investment</div>
+                                    <div class="request-detail-value">₹14,500</div>
+                                </div>
+                                <div class="request-detail-row">
+                                    <div class="request-detail-label">PAN Limit</div>
+                                    <div class="request-detail-value">₹2,00,000</div>
+                                </div>
+                            </div>
+                            
+                            <div class="request-actions">
+                                <button class="btn btn-outline">Reject</button>
+                                <button class="btn btn-primary">Accept</button>
+                            </div>
+                        </div>
+                        
+                        <div class="request-card" onclick="openChat('Priya Mehta')">
+                            <div class="request-header">
+                                <div class="requester-info">
+                                    <div class="requester-pic">PM</div>
+                                    <div>
+                                        <div class="requester-name">Priya Mehta</div>
+                                    </div>
+                                </div>
+                                <div class="request-type ipo">IPO Partnership</div>
+                            </div>
+                            
+                            <div class="request-details">
+                                <div class="request-detail-row">
+                                    <div class="request-detail-label">IPO Name</div>
+                                    <div class="request-detail-value">Global Pharma Inc.</div>
+                                </div>
+                                <div class="request-detail-row">
+                                    <div class="request-detail-label">Total Amount</div>
+                                    <div class="request-detail-value">₹1,25,000</div>
+                                </div>
+                                <div class="request-detail-row">
+                                    <div class="request-detail-label">Your Share</div>
+                                    <div class="request-detail-value">₹62,500 (50%)</div>
+                                </div>
+                            </div>
+                            
+                            <div class="request-actions">
+                                <button class="btn btn-outline">Reject</button>
+                                <button class="btn btn-primary">Accept</button>
+                            </div>
+                        </div>
+                        
+                        <div class="request-card" onclick="openChat('Amit Sharma')">
+                            <div class="request-header">
+                                <div class="requester-info">
+                                    <div class="requester-pic">AS</div>
+                                    <div>
+                                        <div class="requester-name">Amit Sharma</div>
+                                    </div>
+                                </div>
+                                <div class="request-type pan">PAN Investment</div>
+                            </div>
+                            
+                            <div class="request-details">
+                                <div class="request-detail-row">
+                                    <div class="request-detail-label">IPO Name</div>
+                                    <div class="request-detail-value">Renewable Energy Corp.</div>
+                                </div>
+                                <div class="request-detail-row">
+                                    <div class="request-detail-label">Investment</div>
+                                    <div class="request-detail-value">₹18,750</div>
+                                </div>
+                                <div class="request-detail-row">
+                                    <div class="request-detail-label">PAN Limit</div>
+                                    <div class="request-detail-value">₹2,00,000</div>
+                                </div>
+                            </div>
+                            
+                            <div class="request-actions">
+                                <button class="btn btn-outline">Reject</button>
+                                <button class="btn btn-primary">Accept</button>
+                            </div>
+                        </div>
+                        
+                        <div class="request-card" onclick="openChat('Neha Patel')">
+                            <div class="request-header">
+                                <div class="requester-info">
+                                    <div class="requester-pic">NP</div>
+                                    <div>
+                                        <div class="requester-name">Neha Patel</div>
+                                    </div>
+                                </div>
+                                <div class="request-type ipo">IPO Partnership</div>
+                            </div>
+                            
+                            <div class="request-details">
+                                <div class="request-detail-row">
+                                    <div class="request-detail-label">IPO Name</div>
+                                    <div class="request-detail-value">Digital Finance Ltd.</div>
+                                </div>
+                                <div class="request-detail-row">
+                                    <div class="request-detail-label">Total Amount</div>
+                                    <div class="request-detail-value">₹2,50,000</div>
+                                </div>
+                                <div class="request-detail-row">
+                                    <div class="request-detail-label">Your Share</div>
+                                    <div class="request-detail-value">₹1,25,000 (50%)</div>
+                                </div>
+                            </div>
+                            
+                            <div class="request-actions">
+                                <button class="btn btn-outline">Reject</button>
+                                <button class="btn btn-primary">Accept</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-container" id="chatContainer">
+                    <div class="chat-header">
+                        <div class="chat-back" onclick="closeChat()">
+                            <i class="fas fa-arrow-left"></i>
+                        </div>
+                        <div class="chat-with">
+                            <div class="chat-pic" id="chatPersonInitials">VS</div>
+                            <div class="chat-name" id="chatPersonName">Vijay Singh</div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message received">
+                            <div class="message-content">Hello Rahul, I'm interested in using your PAN for the Tech Solutions IPO application. Are you open to this partnership?</div>
+                            <div class="message-time">9:30 AM</div>
+                        </div>
+                        
+                        <div class="message sent">
+                            <div class="message-content">Hi Vijay, I might be interested. How much are you looking to invest?</div>
+                            <div class="message-time">9:32 AM</div>
+                        </div>
+                        
+                        <div class="message received">
+                            <div class="message-content">I'm planning to invest around ₹14,500. My KYC is all verified and I have submitted the request with details. Let me know if you need any other information.</div>
+                            <div class="message-time">9:35 AM</div>
+                        </div>
+                        
+                        <div class="message sent">
+                            <div class="message-content">That sounds reasonable. I've checked your profile and everything looks good. Have you participated in IPOs before?</div>
+                            <div class="message-time">9:38 AM</div>
+                        </div>
+                        
+                        <div class="message received">
+                            <div class="message-content">Yes, I've participated in 5 IPOs so far and got allotment in 3 of them. This one looks promising with good listing gains potential.</div>
+                            <div class="message-time">9:40 AM</div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input-container">
+                        <input type="text" class="chat-input" placeholder="Type a message...">
+                        <button class="chat-send">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Tab Switching
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                // Here you would typically load different content based on the tab
+            });
+        });
+        
+        // Chat Functionality
+        const requestsSection = document.getElementById('requestsSection');
+        const chatContainer = document.getElementById('chatContainer');
+        const chatPersonName = document.getElementById('chatPersonName');
+        const chatPersonInitials = document.getElementById('chatPersonInitials');
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.querySelector('.chat-input');
+        const chatSend = document.querySelector('.chat-send');
+        
+        // Open chat from menu
+        document.getElementById('openChat').addEventListener('click', () => {
+            openChat('Vijay Singh'); // Default to first person
+        });
+        
+        function openChat(personName) {
+            requestsSection.style.display = 'none';
+            chatContainer.style.display = 'flex';
+            chatPersonName.textContent = personName;
+            const initials = personName.split(' ').map(n => n[0]).join('');
+            chatPersonInitials.textContent = initials;
+            
+            // Here you would typically load chat history with this person
+        }
+        
+        function closeChat() {
+            requestsSection.style.display = 'flex';
+            chatContainer.style.display = 'none';
+        }
+        
+        // Send message functionality
+        chatSend.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        function sendMessage() {
+            const messageText = chatInput.value.trim();
+            if (messageText) {
+                const now = new Date();
+                const timeString = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+                
+                const messageElement = document.createElement('div');
+                messageElement.className = 'message sent';
+                messageElement.innerHTML = `
+                    <div class="message-content">${messageText}</div>
+                    <div class="message-time">${timeString}</div>
+                `;
+                
+                chatMessages.appendChild(messageElement);
+                chatInput.value = '';
+                
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Here you would typically send the message to a server
+                // and possibly handle a response
+            }
+        }
+    </script>
+</body>
+</html>

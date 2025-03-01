@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Partnership Dashboard - User Success Rates</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+    
+    .dashboard {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+    
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .stat-card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    .stat-title {
+      font-size: 14px;
+      color: #7f8c8d;
+      margin-bottom: 8px;
+    }
+    
+    .stat-value {
+      font-size: 28px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+    
+    .stat-change {
+      font-size: 14px;
+      margin-top: 5px;
+    }
+    
+    .positive {
+      color: #27ae60;
+    }
+    
+    .negative {
+      color: #e74c3c;
+    }
+    
+    .filters {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .filter-item {
+      padding: 8px 15px;
+      background-color: white;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      border: 1px solid #ddd;
+    }
+    
+    .filter-item.active {
+      background-color: #3498db;
+      color: white;
+      border-color: #3498db;
+    }
+    
+    .search-container {
+      display: flex;
+      margin-bottom: 20px;
+    }
+    
+    .search-input {
+      flex-grow: 1;
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px 0 0 4px;
+      font-size: 14px;
+    }
+    
+    .search-button {
+      padding: 10px 20px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+    }
+    
+    .partners-container {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .container-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .container-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+    
+    .view-all {
+      font-size: 14px;
+      color: #3498db;
+      cursor: pointer;
+    }
+    
+    .success-rate-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .success-rate-table th {
+      text-align: left;
+      padding: 12px 15px;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+      color: #7f8c8d;
+      font-weight: normal;
+    }
+    
+    .success-rate-table td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+    }
+    
+    .user-profile {
+      display: flex;
+      align-items: center;
+    }
+    
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #ddd;
+      margin-right: 15px;
+      overflow: hidden;
+    }
+    
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background-color: #ecf0f1;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      border-radius: 4px;
+    }
+    
+    .success-metrics {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .metric {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      background-color: #f8f9fa;
+    }
+    
+    .user-metrics-container {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    
+    .user-metrics-card {
+      border: 1px solid #eee;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .user-header {
+      display: flex;
+      padding: 15px;
+      align-items: center;
+      background-color: #f8f9fa;
+    }
+    
+    .user-info {
+      flex-grow: 1;
+    }
+    
+    .success-badge {
+      background-color: #27ae60;
+      color: white;
+      font-size: 12px;
+      padding: 3px 8px;
+      border-radius: 10px;
+    }
+    
+    .metrics-content {
+      padding: 15px;
+    }
+    
+    .metrics-chart {
+      height: 200px;
+      margin-bottom: 15px;
+      border: 1px solid #eee;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .chart-bars {
+      display: flex;
+      height: 100%;
+      align-items: flex-end;
+      justify-content: space-around;
+      padding: 10px;
+    }
+    
+    .chart-bar {
+      width: 30px;
+      background-color: #3498db;
+      position: relative;
+    }
+    
+    .chart-bar-label {
+      position: absolute;
+      top: -20px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 10px;
+    }
+    
+    .chart-bar-type {
+      position: absolute;
+      bottom: -20px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 10px;
+    }
+    
+    .metrics-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .metrics-table th, .metrics-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #eee;
+      font-size: 13px;
+      text-align: left;
+    }
+    
+    .metrics-table th {
+      color: #7f8c8d;
+      font-weight: normal;
+    }
+    
+    .chart-legend {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 10px;
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+    }
+    
+    .legend-color {
+      width: 12px;
+      height: 12px;
+      margin-right: 5px;
+      border-radius: 2px;
+    }
+    
+    .donut-chart {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      margin: 0 auto;
+    }
+    
+    .donut-segment {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      clip: rect(0px, 150px, 150px, 75px);
+    }
+    
+    .donut-segment.full {
+      clip: rect(auto, auto, auto, auto);
+    }
+    
+    .donut-center {
+      position: absolute;
+      top: 25%;
+      left: 25%;
+      width: 50%;
+      height: 50%;
+      border-radius: 50%;
+      background-color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <div class="header">
+      <div class="title">IPO Match</div>
+      <div class="date">March 1, 2025</div>
+    </div>
+    
+    <div class="stats-container">
+      <div class="stat-card">
+        <div class="stat-title">Total Successful Partnerships</div>
+        <div class="stat-value">487</div>
+        <div class="stat-change positive">+12% this month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Average Success Rate</div>
+        <div class="stat-value">78%</div>
+        <div class="stat-change positive">+2% this month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Top Performer Rate</div>
+        <div class="stat-value">94%</div>
+        <div class="stat-change positive">+1% this month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">New Partnerships</div>
+        <div class="stat-value">43</div>
+        <div class="stat-change positive">+8% this month</div>
+      </div>
+    </div>
+    
+    <div class="filters">
+      <div class="filter-item active">All Users</div>
+      <div class="filter-item">Top Performers (>85%)</div>
+      <div class="filter-item">High Volume (>10 Partnerships)</div>
+      <div class="filter-item">Capital Providers</div>
+      <div class="filter-item">Investors</div>
+    </div>
+    
+    <div class="search-container">
+      <input type="text" class="search-input" placeholder="Search by name, ID, or PAN...">
+      <button class="search-button">Search</button>
+    </div>
+    
+    <div class="partners-container">
+      <div class="container-header">
+        <div class="container-title">User Success Rates</div>
+        <div class="view-all">Export Data</div>
+      </div>
+      
+      <table class="success-rate-table">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Role</th>
+            <th>Success Rate</th>
+            <th>Partnerships</th>
+            <th>PAN Applications</th>
+            <th>Allotments</th>
+            <th>Success Metrics</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="user-profile">
+                <div class="avatar">
+                  <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png" alt="Profile Avatar">
+                </div>
+                <div>Rajiv Sharma</div>
+              </div>
+            </td>
+            <td>Capital Provider</td>
+            <td>
+              <div>92%</div>
+              <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 92%; background-color: #27ae60;"></div>
+              </div>
+            </td>
+            <td>12</td>
+            <td>38</td>
+            <td>35</td>
+            <td>
+              <div class="success-metrics">
+                <div class="metric">IPO Success: 94%</div>
+                <div class="metric">Avg. Allotment: ₹425,000</div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="user-profile">
+                <div class="avatar">
+                  <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png" alt="Profile Avatar">
+                </div>
+                <div>Priya Patel</div>
+              </div>
+            </td>
+            <td>Investor</td>
+            <td>
+              <div>87%</div>
+              <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 87%; background-color: #27ae60;"></div>
+              </div>
+            </td>
+            <td>8</td>
+            <td>24</td>
+            <td>21</td>
+            <td>
+              <div class="success-metrics">
+                <div class="metric">IPO Success: 88%</div>
+                <div class="metric">Avg. Allotment: ₹380,000</div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="user-profile">
+                <div class="avatar">
+                  <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png" alt="Profile Avatar">
+                </div>
+                <div>Vikram Mehta</div>
+              </div>
+            </td>
+            <td>Capital Provider</td>
+            <td>
+              <div>89%</div>
+              <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 89%; background-color: #27ae60;"></div>
+              </div>
+            </td>
+            <td>15</td>
+            <td>42</td>
+            <td>37</td>
+            <td>
+              <div class="success-metrics">
+                <div class="metric">IPO Success: 90%</div>
+                <div class="metric">Avg. Allotment: ₹450,000</div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="user-profile">
+                <div class="avatar">
+                  <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png" alt="Profile Avatar">
+                </div>
+                <div>Ananya Desai</div>
+              </div>
+            </td>
+            <td>Investor</td>
+            <td>
+              <div>76%</div>
+              <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 76%; background-color: #f39c12;"></div>
+              </div>
+            </td>
+            <td>5</td>
+            <td>18</td>
+            <td>14</td>
+            <td>
+              <div class="success-metrics">
+                <div class="metric">IPO Success: 78%</div>
+                <div class="metric">Avg. Allotment: ₹290,000</div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="user-profile">
+                <div class="avatar">
+                  <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png" alt="Profile Avatar">
+                </div>
+                <div>Rahul Verma</div>
+              </div>
+            </td>
+            <td>Capital Provider</td>
+            <td>
+              <div>94%</div>
+              <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 94%; background-color: #27ae60;"></div>
+              </div>
+            </td>
+            <td>10</td>
+            <td>32</td>
+            <td>30</td>
+            <td>
+              <div class="success-metrics">
+                <div class="metric">IPO Success: 95%</div>
+                <div class="metric">Avg. Allotment: ₹520,000</div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Detailed Metrics for Selected User -->
+    <div class="user-metrics-container">
+      <div class="container-header">
+        <div class="container-title">Detailed User Success Analysis</div>
+        <div class="view-all">Print Report</div>
+      </div>
+      
+      <div class="metrics-grid">
+        <div class="user-metrics-card">
+          <div class="user-header">
+            <div class="avatar">
+              <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png" alt="Profile Avatar">
+            </div>
+            <div class="user-info">
+              <div style="font-weight: bold; margin-bottom: 5px;">Rajiv Sharma</div>
+              <div style="font-size: 12px; color: #7f8c8d;">Capital Provider</div>
+            </div>
+            <div><span class="success-badge">92% Success</span></div>
+          </div>
+          
+          <div class="metrics-content">
+            <div class="metrics-chart">
+              <div style="padding: 10px; font-size: 14px; font-weight: bold; color: #7f8c8d;">Success Rate by IPO Type</div>
+              <div class="chart-bars">
+                <div class="chart-bar" style="height: 80%; background-color: #3498db;">
+                  <div class="chart-bar-label">94%</div>
+                  <div class="chart-bar-type">Main</div>
+                </div>
+                <div class="chart-bar" style="height: 90%; background-color: #2ecc71;">
+                  <div class="chart-bar-label">96%</div>
+                  <div class="chart-bar-type">SME</div>
+                </div>
+                <div class="chart-bar" style="height: 85%; background-color: #e74c3c;">
+                  <div class="chart-bar-label">92%</div>
+                  <div class="chart-bar-type">FPO</div>
+                </div>
+                <div class="chart-bar" style="height: 75%; background-color: #f1c40f;">
+                  <div class="chart-bar-label">88%</div>
+                  <div class="chart-bar-type">Rights</div>
+                </div>
+              </div>
+              <div class="chart-legend">
+                <div class="legend-item">
+                  <div class="legend-color" style="background-color: #3498db;"></div>
+                  <div>Main Board</div>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-color" style="background-color: #2ecc71;"></div>
+                  <div>SME</div>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-color" style="background-color: #e74c3c;"></div>
+                  <div>FPO</div>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-color" style="background-color: #f1c40f;"></div>
+                  <div>Rights Issue</div>
+                </div>
+              </div>
+            </div>
+            
+            <table class="metrics-table">
+              <thead>
+                <tr>
+                  <th>Partnership Metric</th>
+                  <th>Value</th>
+                  <th>Benchmark</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Overall Success Rate</td>
+                  <td><strong>92%</strong></td>
+                  <td>78% (platform avg)</td>
+                </tr>
+                <tr>
+                  <td>Applications per Partnership</td>
+                  <td><strong>3.2</strong></td>
+                  <td>2.7 (platform avg)</td>
+                </tr>
+                <!-- <tr>
+                  <td>Avg. Processing Time</td>
+                  <td><strong>1.8 days</strong></td>
+                  <td>2.4 days (platform avg)</td>
+                </tr> -->
+                <tr>
+                  <td>Total Allotment Value</td>
+                  <td><strong>₹14,875,000</strong></td>
+                  <td>₹8,650,000 (platform avg)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="user-metrics-card">
+          <div class="user-header">
+            <div style="font-weight: bold;">Success Rate Breakdown</div>
+          </div>
+          
+          <div class="metrics-content">
+            <div style="display: flex; margin-bottom: 20px;">
+              <div style="flex: 1;">
+                <div class="donut-chart">
+                  <div class="donut-segment full" style="background-color: #3498db; transform: rotate(0deg);"></div>
+                  <div class="donut-segment" style="background-color: white; transform: rotate(331.2deg);"></div>
+                  <div class="donut-center">92%</div>
+                </div>
+                <div style="text-align: center; margin-top: 10px; font-size: 14px;">Overall Success</div>
+              </div>
+              
+              <div style="flex: 1;">
+                <table class="metrics-table">
+                  <thead>
+                    <tr>
+                      <th>IPO</th>
+                      <th>Success</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>ZOMATO-IPO-2025</td>
+                      <td>100%</td>
+                    </tr>
+                    <tr>
+                      <td>PAYTM-SME-IPO</td>
+                      <td>100%</td>
+                    </tr>
+                    <tr>
+                      <td>RPOWER-IPO-2025</td>
+                      <td>90%</td>
+                    </tr>
+                    <tr>
+                      <td>INDIGO-RIGHTS-2025</td>
+                      <td>80%</td>
+                    </tr>
+                    <tr>
+                      <td>ONGC-FPO-2025</td>
+                      <td>90%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+            <div style="margin-top: 20px;">
+              <div style="font-weight: bold; margin-bottom: 10px;">Success Factors</div>
+              <table class="metrics-table">
+                <tbody>
+                  <tr>
+                    <td>Multiple PAN Strategy</td>
+                    <td><div class="progress-bar-container">
+                      <div class="progress-bar" style="width: 95%; background-color: #27ae60;"></div>
+                    </div></td>
+                    <td>Excellent</td>
+                  </tr>
+                  <tr>
+                    <td>Diversification</td>
+                    <td><div class="progress-bar-container">
+                      <div class="progress-bar" style="width: 85%; background-color: #27ae60;"></div>
+                    </div></td>
+                    <td>Very Good</td>
+                  </tr>
+                  <tr>
+                    <td>Application Timing</td>
+                    <td><div class="progress-bar-container">
+                      <div class="progress-bar" style="width: 90%; background-color: #27ae60;"></div>
+                    </div></td>
+                    <td>Excellent</td>
+                  </tr>
+                  <tr>
+                    <td>Partner Selection</td>
+                    <td><div class="progress-bar-container">
+                      <div class="progress-bar" style="width: 88%; background-color: #27ae60;"></div>
+                    </div></td>
+                    <td>Very Good</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

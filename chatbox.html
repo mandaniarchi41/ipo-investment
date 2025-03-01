@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPO Information Assistant</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #64748b;
+        }
+        .trending-ipos {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .trending-ipos h2 {
+            color: #1e3a8a;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        .ipo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .ipo-card {
+            background-color: #f8fafc;
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid #3b82f6;
+            transition: transform 0.2s;
+        }
+        .ipo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        .ipo-card h3 {
+            margin-top: 0;
+            color: #1e40af;
+        }
+        .ipo-card p {
+            margin: 5px 0;
+            color: #64748b;
+        }
+        .ipo-card .price {
+            font-weight: bold;
+            color: #047857;
+        }
+        .ipo-card .date {
+            font-style: italic;
+        }
+        .chatbot-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .chat-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .chat-header h2 {
+            color: #1e3a8a;
+            margin: 0;
+            flex-grow: 1;
+        }
+        .chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            padding: 15px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .message {
+            margin-bottom: 15px;
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            line-height: 1.4;
+        }
+        .user-message {
+            background-color: #3b82f6;
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+        .bot-message {
+            background-color: #e2e8f0;
+            color: #334155;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input input {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+        }
+        .chat-input input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        .chat-input button {
+            background-color: #1e40af;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .chat-input button:hover {
+            background-color: #1e3a8a;
+        }
+        .chat-input button:disabled {
+            background-color: #94a3b8;
+            cursor: not-allowed;
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>IPO Match</h1>
+            <p>Get the latest information about Initial Public Offerings</p>
+        </div>
+        
+        <div class="trending-ipos">
+            <h2>Trending IPOs</h2>
+            <div class="ipo-grid">
+                <div class="ipo-card">
+                    <h3>TechFusion Inc.</h3>
+                    <p class="price">Price Range: $24-28</p>
+                    <p>Expected Listing: March 15, 2025</p>
+                    <p>Sector: AI & Cloud Computing</p>
+                    <p>Underwriters: Goldman Sachs, Morgan Stanley</p>
+                </div>
+                <div class="ipo-card">
+                    <h3>GreenEnergy Solutions</h3>
+                    <p class="price">Price Range: $18-22</p>
+                    <p>Expected Listing: March 10, 2025</p>
+                    <p>Sector: Renewable Energy</p>
+                    <p>Underwriters: JP Morgan, Bank of America</p>
+                </div>
+                <div class="ipo-card">
+                    <h3>MedTech Innovations</h3>
+                    <p class="price">Price Range: $32-36</p>
+                    <p>Expected Listing: March 25, 2025</p>
+                    <p>Sector: Healthcare Technology</p>
+                    <p>Underwriters: Citigroup, Deutsche Bank</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chatbot-container">
+            <div class="chat-header">
+                <h2>IPO Assistant</h2>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    Hello! I'm your IPO Assistant. Ask me anything about IPOs, investment strategies, upcoming offerings, or market trends.
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="userInput" placeholder="Ask about IPOs..." />
+                <button id="sendButton">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample IPO information database
+        const ipoDatabase = {
+            "ipo basics": "An Initial Public Offering (IPO) is when a private company first sells shares to the public. This process helps companies raise capital for expansion, pay off debt, or provide liquidity to early investors.",
+            
+            "ipo process": "The IPO process typically includes: 1) Selecting underwriters, 2) Due diligence and SEC filing, 3) Marketing through roadshows, 4) Pricing the offering, 5) Allocation of shares, and 6) Beginning to trade on public exchanges.",
+            
+            "ipo advantages": "IPO advantages include: access to capital, increased public awareness, easier future financing, liquidity for founders and early investors, and potential acquisition currency.",
+            
+            "ipo disadvantages": "IPO disadvantages include: expensive process, regulatory requirements and disclosures, market volatility, pressure for short-term results, potential loss of control, and lockup periods.",
+            
+            "upcoming ipos": "Upcoming IPOs for March 2025 include: TechFusion Inc. (AI & Cloud, March 15), GreenEnergy Solutions (Renewable Energy, March 10), MedTech Innovations (Healthcare Tech, March 25), Consumer Direct (E-commerce, March 20), and DataSecurity Pro (Cybersecurity, March 30).",
+            
+            "techfusion": "TechFusion Inc. is planning to go public on March 15, 2025. They specialize in AI and cloud computing solutions. The price range is $24-28 per share, with Goldman Sachs and Morgan Stanley as lead underwriters. They plan to raise approximately $500M to fund expansion into new markets.",
+            
+            "greenenergy": "GreenEnergy Solutions is expected to list on March 10, 2025. They focus on renewable energy technology, particularly solar and hydrogen storage solutions. Their price range is $18-22 per share, with JP Morgan and Bank of America as underwriters. Their IPO size is estimated at $350M.",
+            
+            "medtech": "MedTech Innovations plans to IPO on March 25, 2025. They develop AI-powered diagnostic tools for healthcare providers. Their price range is $32-36, with Citigroup and Deutsche Bank leading the offering. They're looking to raise $400M to fund clinical trials and market expansion.",
+            
+            "ipo investment strategy": "When investing in IPOs, consider: 1) Researching the company's fundamentals, 2) Reviewing the prospectus carefully, 3) Assessing the management team, 4) Evaluating the offering price, 5) Understanding lockup periods, and 6) Being prepared for volatility. Many financial advisors suggest waiting until after the lockup period expires before investing.",
+            
+            "ipo performance trends": "Historically, IPOs often see price volatility in their first year of trading. In recent trends, technology and healthcare IPOs have shown strong performance in 2024-2025, while consumer goods IPOs have been more mixed. About 60% of IPOs in 2024 traded above their offering price after six months.",
+            
+            "lockup period": "A lockup period is a predetermined timeframe following an IPO during which company insiders and early investors cannot sell their shares. Typically ranging from 90-180 days, lockup periods prevent flooding the market with too many shares immediately after going public."
+        };
+
+        // Function to get response from our simple "AI" system
+        function getIPOResponse(query) {
+            // Convert query to lowercase for matching
+            const lowerQuery = query.toLowerCase();
+            
+            // Check for direct matches in our database
+            for (const key in ipoDatabase) {
+                if (lowerQuery.includes(key)) {
+                    return ipoDatabase[key];
+                }
+            }
+            
+            // Handle general IPO questions
+            if (lowerQuery.includes("ipo") || lowerQuery.includes("public offering")) {
+                if (lowerQuery.includes("what is") || lowerQuery.includes("definition")) {
+                    return ipoDatabase["ipo basics"];
+                }
+                if (lowerQuery.includes("how") || lowerQuery.includes("process")) {
+                    return ipoDatabase["ipo process"];
+                }
+                if (lowerQuery.includes("advantage") || lowerQuery.includes("benefit")) {
+                    return ipoDatabase["ipo advantages"];
+                }
+                if (lowerQuery.includes("disadvantage") || lowerQuery.includes("risk") || lowerQuery.includes("downside")) {
+                    return ipoDatabase["ipo disadvantages"];
+                }
+                if (lowerQuery.includes("upcoming") || lowerQuery.includes("next") || lowerQuery.includes("future")) {
+                    return ipoDatabase["upcoming ipos"];
+                }
+                if (lowerQuery.includes("strategy") || lowerQuery.includes("invest") || lowerQuery.includes("buy")) {
+                    return ipoDatabase["ipo investment strategy"];
+                }
+                if (lowerQuery.includes("performance") || lowerQuery.includes("trend")) {
+                    return ipoDatabase["ipo performance trends"];
+                }
+                if (lowerQuery.includes("lockup") || lowerQuery.includes("lock up") || lowerQuery.includes("lock-up")) {
+                    return ipoDatabase["lockup period"];
+                }
+            }
+            
+            // Check for company specific queries
+            if (lowerQuery.includes("techfusion") || lowerQuery.includes("tech fusion")) {
+                return ipoDatabase["techfusion"];
+            }
+            if (lowerQuery.includes("greenenergy") || lowerQuery.includes("green energy")) {
+                return ipoDatabase["greenenergy"];
+            }
+            if (lowerQuery.includes("medtech") || lowerQuery.includes("med tech")) {
+                return ipoDatabase["medtech"];
+            }
+            
+            // Default response if no match found
+            return "I don't have specific information about that. You can ask about IPO basics, the IPO process, advantages and disadvantages, upcoming IPOs, investment strategies, or specific companies like TechFusion, GreenEnergy, or MedTech.";
+        }
+
+        // Chat functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatMessages = document.getElementById('chatMessages');
+            const userInput = document.getElementById('userInput');
+            const sendButton = document.getElementById('sendButton');
+            
+            // Function to add a message to the chat
+            function addMessage(text, isUser) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message');
+                messageDiv.classList.add(isUser ? 'user-message' : 'bot-message');
+                messageDiv.textContent = text;
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Function to handle user sending a message
+            function handleSend() {
+                const message = userInput.value.trim();
+                if (message) {
+                    // Add user message to chat
+                    addMessage(message, true);
+                    userInput.value = '';
+                    
+                    // Disable button and show loading state
+                    sendButton.disabled = true;
+                    sendButton.innerHTML = '<span class="loading"></span>';
+                    
+                    // Simulate API call delay
+                    setTimeout(() => {
+                        // Get response from our simple AI system
+                        const response = getIPOResponse(message);
+                        
+                        // Add bot response to chat
+                        addMessage(response, false);
+                        
+                        // Reset button
+                        sendButton.disabled = false;
+                        sendButton.textContent = 'Send';
+                    }, 1000);
+                }
+            }
+            
+            // Event listeners
+            sendButton.addEventListener('click', handleSend);
+            userInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    handleSend();
+                }
+            });
+        });
+        
+        // Note: In a real implementation, you would replace the getIPOResponse function
+        // with an actual API call to an AI service. The code would look something like:
+        /*
+        async function getAIResponse(query) {
+            try {
+                const response = await fetch('https://api.openai.com/v1/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer YOUR_API_KEY_HERE'
+                    },
+                    body: JSON.stringify({
+                        model: "gpt-3.5-turbo",
+                        messages: [
+                            {role: "system", content: "You are an IPO information assistant. Provide helpful information about IPOs."},
+                            {role: "user", content: query}
+                        ],
+                        temperature: 0.7
+                    })
+                });
+                const data = await response.json();
+                return data.choices[0].message.content;
+            } catch (error) {
+                console.error('Error:', error);
+                return "Sorry, I'm having trouble connecting to my knowledge base right now. Please try again later.";
+            }
+        }
+        */
+    </script>
+</body>
+</html>
