@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPO Match - Available IPOs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #212529; 
+        }
+        
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .logo h1 {
+            color: #0d6efd;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .logo span {
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-menu img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            background-color: #e9ecef;
+        }
+        
+        .notification-badge {
+            background-color: #dc3545;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        
+        h2 {
+            margin-bottom: 20px;
+            color: #212529;
+        }
+        
+        .ipo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .ipo-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .ipo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .ipo-header {
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .ipo-header h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .ipo-body {
+            padding: 15px;
+        }
+        
+        .ipo-detail {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .label {
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        .value {
+            font-weight: 500;
+        }
+        
+        .ipo-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-open {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+        
+        .status-upcoming {
+            background-color: #cfe2ff;
+            color: #084298;
+        }
+        
+        .status-closed {
+            background-color: #f8d7da;
+            color: #842029;
+        }
+        
+        .ipo-footer {
+            padding: 15px;
+            border-top: 1px solid #dee2e6;
+            text-align: center;
+        }
+        
+        .btn {
+            display: inline-block;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background-color: #0d6efd;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #0d6efd;
+            color: #0d6efd;
+        }
+        
+        .btn-outline:hover {
+            background-color: #0d6efd;
+            color: white;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            font-size: 20px;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #6c757d;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .tab-btn {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            color: #6c757d;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab-btn.active {
+            color: #0d6efd;
+            border-bottom-color: #0d6efd;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .ipo-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 15px 0;
+            color: #212529;
+        }
+        
+        .investment-options {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .option-card {
+            flex: 1;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        .option-card:hover {
+            border-color: #0d6efd;
+            box-shadow: 0 0 10px rgba(13, 110, 253, 0.2);
+        }
+        
+        .option-card.selected {
+            border-color: #0d6efd;
+            background-color: #f0f7ff;
+        }
+        
+        .option-card h4 {
+            color: #0d6efd;
+            margin-bottom: 10px;
+        }
+        
+        .option-card p {
+            color: #6c757d;
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+        
+        .partner-info-container {
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .partner-card {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .partner-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #e9ecef;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        
+        .partner-details {
+            flex: 1;
+        }
+        
+        .partner-name {
+            font-weight: 500;
+        }
+        
+        .partner-stats {
+            font-size: 12px;
+            color: #6c757d;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>IPO Match</h1>
+            <span>Connect, Invest, Grow</span>
+        </div>
+        <div class="user-menu">
+            <img src="/api/placeholder/40/40" alt="User Avatar">
+            <span>Om Patel</span>
+            <div class="notification-badge">3</div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <h2>Available IPOs</h2>
+        
+        <div class="ipo-grid">
+            <!-- IPO Card 1 -->
+            <div class="ipo-card">
+                <div class="ipo-header">
+                    <h3>Dr.Agarwal's Health Care</h3>
+                </div>
+                <div class="ipo-body">
+                    <div class="ipo-detail">
+                        <span class="label">Price Band</span>
+                        <span class="value">₹382 - ₹402</span>
+                    </div>
+                    <div class="ipo-detail">
+                        <span class="label">Issue Size</span>
+                        <span class="value">₹2,500 Cr</span>
+                    </div>
+                    <div class="ipo-detail">
+                        <span class="label">Min. Investment</span>
+                        <span class="value">₹14,450</span>
+                    </div>
+                    <div class="ipo-detail">
+                        <span class="label">Status</span>
+                        <span class="ipo-status status-open">Open</span>
+                    </div>
+                </div>
+                <div class="ipo-footer">
+                    <a href="seconfipolist.html" class="get-started-btn">
+                        <button class="btn btn-primary" 
+                                onclick="showIPODetails('HealthPlus Medical', '₹1,200 - ₹1,280', '₹3,200 Cr', '₹15,360', 'Open', '20 Feb - 27 Feb 2025', 'Healthcare', 'High'); event.stopPropagation();">
+                            Select IPO
+                        </button>
+                    </a>
+                    <!-- <button class="btn btn-primary" onclick="showIPODetails('TechSolutions Ltd.', '₹800 - ₹850', '₹2,500 Cr', '₹14,450', 'Open', '25 Feb - 28 Feb 2025', 'Technology', 'Moderate')">Select IPO</button> -->
+                </div>
+            </div>
+            
+            <!-- IPO Card 2 -->
+            <div class="ipo-card">
+                <div class="ipo-header">
+                    <h3>Denta Water and infra</h3>
+                </div>
+                <div class="ipo-body">
+                    <div class="ipo-detail">
+                        <span class="label">Price Band</span>
+                        <span class="value">₹250 - ₹275</span>
+                    </div>
+                    <div class="ipo-detail">
+                        <span class="label">Issue Size</span>
+                        <span class="value">₹1,800 Cr</span>
+                    </div>
+                    <div class="ipo-detail">
+                        <span class="label">Min. Investment</span>
+                        <span class="value">₹14,850</span>
+                    </div>
+                    <div class="ipo-detail">
+                        <span class="label">Status</span>
+                        <span class="ipo-status status-upcoming">Upcoming</span>
+                    </div>
+                </div>
+                <div class="ipo-footer">
+                    <a href="secondprofile2.html" class="get-started-btn">
+                        <button class="btn btn-primary" 
+                                onclick="showIPODetails('HealthPlus Medical', '₹1,200 - ₹1,280', '₹3,200 Cr', '₹15,360', 'Open', '20 Feb - 27 Feb 2025', 'Healthcare', 'High'); event.stopPropagation();">
+                            Select IPO
+                        </button>
+                    </a>
+                    <!-- <button class="btn btn-primary" onclick="showIPODetails('GreenEnergy Power', '₹250 - ₹275', '₹1,800 Cr', '₹14,850', 'Upcoming', '1 Mar - 5 Mar 2025', 'Energy', 'Low')">Select IPO</button> -->
+                </div>
+            </div>
+            
+            <!-- IPO Card 3 -->
+            <div class="ipo-card">
+                <div class="ipo-header">
+                    <h3>Quality Power Electrical Equipments</h3>
+                </div>
+                <div class="ipo-body">
+                    <div class="ipo-detail">
+                        <span class="label">Price Band</span>
+                        <span class="value">₹1,200 - ₹1,280</span>
+                    </div>
+                    <div class="ipo-detail">
+                        <span class="label">Issue Size</span>
+                        <span class="value">₹3,200 Cr</span>
+                    </div>
+                    <div class="ipo-detail">
+                        <span class="label">Min. Investment</span>
+                        <span class="value">₹15,360</span>
+                    </div>
+                    <div class="ipo-detail">
+                        <span class="label">Status</span>
+                        <span class="ipo-status status-open">Open</span>
+                    </div>
+                </div>
+                <div class="ipo-footer">
+                    <a href="secondprofile3.html" class="get-started-btn">
+                        <button class="btn btn-primary" 
+                                onclick="showIPODetails('HealthPlus Medical', '₹1,200 - ₹1,280', '₹3,200 Cr', '₹15,360', 'Open', '20 Feb - 27 Feb 2025', 'Healthcare', 'High'); event.stopPropagation();">
+                            Select IPO
+                        </button>
+                    </a>
+                    <!-- <button class="btn btn-primary" onclick="showIPODetails('HealthPlus Medical', '₹1,200 - ₹1,280', '₹3,200 Cr', '₹15,360', 'Open', '20 Feb - 27 Feb 2025', 'Healthcare', 'High')">Select IPO</button> -->
+                </div>
+            </div>
+            
+            <!-- IPO Card 4 -->
+            <div class="ipo-card">
+                <div class="ipo-header">
+                    <h3>Hexaware Technologies</h3>
+                </div>
+                <div class="ipo-body">
+                    <div class="ipo-detail">
+                        <span class="label">Price Band</span>
+                        <span class="value">₹500 - ₹525</span>
+                    </div>
+                    <div class="ipo-detail">
+                        <span class="label">Issue Size</span>
+                        <span class="value">₹1,500 Cr</span>
+                    </div>
+                    <div class="ipo-detail">
+                        <span class="label">Min. Investment</span>
+                        <span class="value">₹14,700</span>
+                    </div>
+                    <div class="ipo-detail">
+                        <span class="label">Status</span>
+                        <span class="ipo-status status-closed">Closed</span>
+                    </div>
+                </div>
+                <div class="ipo-footer">
+                    <!-- <button class="btn btn-outline">View Details</button> -->
+                    <!-- <button class="btn btn-primary" onclick="showIPODetails('HealthPlus Medical', '₹1,200 - ₹1,280', '₹3,200 Cr', '₹15,360', 'Open', '20 Feb - 27 Feb 2025', 'Healthcare', 'High')">Select IPO</button>
+                    <a href="seconfipolist.html" class="get-started-btn">Select IPO</a> -->
+                    <a href="secondprofile4.html" class="get-started-btn">
+                        <button class="btn btn-primary" 
+                                onclick="showIPODetails('HealthPlus Medical', '₹1,200 - ₹1,280', '₹3,200 Cr', '₹15,360', 'Open', '20 Feb - 27 Feb 2025', 'Healthcare', 'High'); event.stopPropagation();">
+                            Select IPO
+                        </button>
+                    </a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- IPO Details Modal -->
+    <div class="modal" id="ipoDetailsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalIpoName">IPO Details</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="openTab('details')">IPO Details</button>
+                    <button class="tab-btn" onclick="openTab('investment')">Investment Options</button>
+                </div>
+                
+                <!-- IPO Details Tab -->
+                <div class="tab-content active" id="details">
+                    <div class="ipo-detail-grid">
+                        <div class="ipo-detail">
+                            <span class="label">Price Band</span>
+                            <span class="value" id="modalPriceBand">₹800 - ₹850</span>
+                        </div>
+                        <div class="ipo-detail">
+                            <span class="label">Issue Size</span>
+                            <span class="value" id="modalIssueSize">₹2,500 Cr</span>
+                        </div>
+                        <div class="ipo-detail">
+                            <span class="label">Min. Investment</span>
+                            <span class="value" id="modalMinInvestment">₹14,450</span>
+                        </div>
+                        <div class="ipo-detail">
+                            <span class="label">Status</span>
+                            <span class="ipo-status" id="modalStatus">Open</span>
+                        </div>
+                        <div class="ipo-detail">
+                            <span class="label">Bidding Dates</span>
+                            <span class="value" id="modalBiddingDates">25 Feb - 28 Feb 2025</span>
+                        </div>
+                        <div class="ipo-detail">
+                            <span class="label">Sector</span>
+                            <span class="value" id="modalSector">Technology</span>
+                        </div>
+                        <div class="ipo-detail">
+                            <span class="label">Risk Profile</span>
+                            <span class="value" id="modalRisk">Moderate</span>
+                        </div>
+                        <div class="ipo-detail">
+                            <span class="label">Allotment Date</span>
+                            <span class="value">4 Mar 2025</span>
+                        </div>
+                    </div>
+                    
+                    <div class="section-title">Company Overview</div>
+                    <p>TechSolutions Ltd. is a leading IT solutions provider specializing in cloud services, AI development, and enterprise software solutions. The company has shown consistent growth over the past 5 years with a compound annual growth rate (CAGR) of 25%.</p>
+                    
+                    <div class="section-title">Financial Highlights</div>
+                    <div class="ipo-detail-grid">
+                        <div class="ipo-detail">
+                            <span class="label">Revenue (FY 2024-25)</span>
+                            <span class="value">₹1,850 Cr</span>
+                        </div>
+                        <div class="ipo-detail">
+                            <span class="label">Profit After Tax</span>
+                            <span class="value">₹320 Cr</span>
+                        </div>
+                        <div class="ipo-detail">
+                            <span class="label">EBITDA Margin</span>
+                            <span class="value">22.5%</span>
+                        </div>
+                        <div class="ipo-detail">
+                            <span class="label">EPS (FY 2024-25)</span>
+                            <span class="value">₹12.75</span>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-outline" onclick="openTab('investment')">Proceed to Invest</button>
+                    </div>
+                </div>
+                
+                <!-- Investment Options Tab -->
+                <div class="tab-content" id="investment">
+                    <div class="section-title">Select Investment Option</div>
+                    
+                    <div class="investment-options">
+                        <div class="option-card" onclick="selectOption('partnership', this)">
+                            <h4>IPO Partnership</h4>
+                            <p>Team up with investors who will fund your IPO application. Share profits based on predefined agreements.</p>
+                            <p><strong>Profit Split:</strong> 70:30 (You:Investor)</p>
+                        </div>
+                        
+                        <div class="option-card" onclick="selectOption('pan', this)">
+                            <h4>PAN Investment</h4>
+                            <p>Provide your PAN for applications by capital-ready investors. Earn fixed returns on allotment.</p>
+                            <p><strong>Fixed Fee:</strong> ₹1,000 per allotment</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Partnership Information (Initially Hidden) -->
+                    <div class="partner-info-container" id="partnershipInfo">
+                        <div class="section-title">Available Investment Partners</div>
+                        
+                        <div class="partner-card">
+                            <div class="partner-avatar">VS</div>
+                            <div class="partner-details">
+                                <div class="partner-name">Vikram Singh</div>
+                                <div class="partner-stats">
+                                    <span>10 Successful Partnerships</span> • 
+                                    <span>95% Match Compatibility</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="partner-card">
+                            <div class="partner-avatar">AM</div>
+                            <div class="partner-details">
+                                <div class="partner-name">Anjali Mehta</div>
+                                <div class="partner-stats">
+                                    <span>8 Successful Partnerships</span> • 
+                                    <span>87% Match Compatibility</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="partner-card">
+                            <div class="partner-avatar">RP</div>
+                            <div class="partner-details">
+                                <div class="partner-name">Raj Patel</div>
+                                <div class

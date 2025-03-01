@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPO Invest - Your Gateway to IPO Investments</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #2563eb;
+        }
+        
+        .get-started-btn {
+            background-color: #2563eb;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .get-started-btn:hover {
+            background-color: #1d4ed8;
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(37, 99, 235, 0.05), rgba(37, 99, 235, 0.1));
+            padding: 80px 5%;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #1e3a8a;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: #4b5563;
+        }
+        
+        .start-investing-btn {
+            background-color: #2563eb;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        
+        .start-investing-btn:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-3px);
+        }
+        
+        .features {
+            padding: 80px 5%;
+            text-align: center;
+        }
+        
+        .features h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #1e3a8a;
+        }
+        
+        .features-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .feature-card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            flex: 1;
+            min-width: 300px;
+            max-width: 350px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            font-size: 40px;
+            color: #2563eb;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #1e3a8a;
+        }
+        
+        .how-it-works {
+            padding: 80px 5%;
+            background-color: #f9fafb;
+            text-align: center;
+        }
+        
+        .how-it-works h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #1e3a8a;
+        }
+        
+        .steps {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .step {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            flex: 1;
+            min-width: 200px;
+            max-width: 250px;
+            position: relative;
+        }
+        
+        .step-number {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #2563eb;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .step h3 {
+            margin-top: 10px;
+            margin-bottom: 15px;
+            color: #1e3a8a;
+        }
+        
+        footer {
+            background-color: #1e3a8a;
+            color: white;
+            padding: 40px 5%;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">IPO Match</div>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Features</a></li>
+            <li><a href="#">How It Works</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        <a href="kyclogin.html" class="get-started-btn">Get Started</a>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Your Gateway to IPO Investments</h1>
+        <p>IPO Invest provides a seamless platform to invest in Initial Public Offerings. Get access to premium IPOs, manage multiple applications, and track your investments all in one place.</p>
+        <a href="kyclogin.html" class="start-investing-btn">Start Investing</a>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="features">
+        <h2>Premium Features</h2>
+        <p>Discover why thousands of investors choose our platform</p>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🤝</div>
+                <h3>IPO Partnering</h3>
+                <p>Access exclusive IPO opportunities through our partnerships with leading banks and financial institutions.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Secure Investment</h3>
+                <p>Our platform uses bank-grade security protocols to ensure your investments and personal information remain safe.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📄</div>
+                <h3>Multiple PAN Application</h3>
+                <p>Apply for IPOs using multiple PAN cards for your family members, all managed from a single account.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+        <h2>How It Works</h2>
+        <p>Get started with IPO investing in four simple steps</p>
+        
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Create an Account</h3>
+                <p>Sign up and complete the verification process with your KYC details.</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Connect with Partners</h3>
+                <p>Link your bank accounts and demat accounts to enable seamless transactions.</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Apply for IPOs</h3>
+                <p>Browse available IPOs and submit your applications with just a few clicks.</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Track & Manage</h3>
+                <p>Monitor your applications and manage your portfolio through our dashboard.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 IPO Invest. All rights reserved.</p>
+    </footer>
+</body>
+</html>

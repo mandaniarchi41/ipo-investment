@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPO Match - KYC Login</title>
+    <script type="module" src="C:\Users\khush\OneDrive\Documents\odoo\firebaseauth.js"defer ></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo h1 {
+            color: #0d6efd;
+            font-size: 32px;
+            font-weight: bold;
+        }
+        
+        .logo p {
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        h2 {
+            margin-bottom: 20px;
+            color: #0d6efd;
+            font-size: 24px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        input[type="email"]:focus {
+            border-color: #0d6efd;
+            outline: none;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            width: 100%;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #0b5ed7;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .text-muted {
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        .mt-3 {
+            margin-top: 15px;
+        }
+        
+        .link {
+            color: #0d6efd;
+            text-decoration: none;
+        }
+        
+        .link:hover {
+            text-decoration: underline;
+        }
+        
+        .alert {
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .alert-success {
+            background-color: #d1e7dd;
+            color: #0f5132;
+            border: 1px solid #badbcc;
+        }
+        
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #842029;
+            border: 1px solid #f5c2c7;
+        }
+        
+        .pan-verified {
+            background-color: #d1e7dd;
+            color: #0f5132;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            display: none;
+        }
+
+        .messageDiv{
+            background-color: #0f5132;
+            color: #d1e7dd;
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 5px;
+            font-size: 1rem;
+            opacity: 0;
+            animation: fadeOut 7s forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1>IPO Match</h1>
+            <p>Connect, Invest, Grow</p>
+            
+        </div>
+        <div id="signUpMessage" class="messageDiv" style ="display:none;" ></div>
+        
+        <div id="verificationStep" class="verification-step">
+            <h2>PAN Verification</h2>
+            <p class="text-muted mb-4">Please enter your PAN details to proceed with KYC verification</p>
+            
+            <div class="alert alert-danger" id="errorAlert">Invalid PAN format. Please check and try again.</div>
+            
+            <div class="form-group">
+                <label for="panNumber">PAN Number*</label>
+                <input type="text" id="panNumber" placeholder="e.g., ABCDE1234F" maxlength="10">
+            </div>
+            
+            <div class="form-group">
+                <label for="fullName">Full Name (as per PAN)*</label>
+                <input type="text" id="fullName" placeholder="Enter your full name">
+            </div>
+            
+            <div class="form-group">
+                <label for="dob">Date of Birth*</label>
+                <input type="text" id="dob" placeholder="DD/MM/YYYY">
+            </div>
+            
+            <button class="btn" id="verifyPanBtn" onclick="verifyPan()">Verify PAN</button>
+            
+            <p class="text-center mt-3">
+                Already verified? <a href="#" class="link" onclick="showLoginForm()">Login here</a>
+            </p>
+        </div>
+        
+        <div id="loginStep" style="display: none;">
+            <h2>Login to Your Account</h2>
+            <div class="pan-verified" id="panVerifiedBadge">
+                <span>✓</span> PAN Verified
+            </div>
+            <div id="signInMessage" class="messageDiv" style ="display:none;" ></div>
+            <div class="form-group">
+                <label for="email">Email Address*</label>
+                <input type="email" id="email" placeholder="Enter your email">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password*</label>
+                <input type="password" id="password" placeholder="Enter your password">
+            </div>
+            
+            <button class="btn" onclick="login()">Login</button>
+            
+            <p class="text-center mt-3">
+                <a href="#" class="link">Forgot Password?</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function verifyPan() {
+            const panNumber = document.getElementById('panNumber').value;
+            const fullName = document.getElementById('fullName').value;
+            const dob = document.getElementById('dob').value;
+            
+            // Simple validation for demo purposes
+            const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+            
+            if (!panRegex.test(panNumber) || !fullName || !dob) {
+                document.getElementById('errorAlert').style.display = 'block';
+                return;
+            }
+            
+            // If validation passes, show login form
+            showLoginForm();
+            document.getElementById('panVerifiedBadge').style.display = 'inline-block';
+        }
+        
+        function showLoginForm() {
+            document.getElementById('verificationStep').style.display = 'none';
+            document.getElementById('loginStep').style.display = 'block';
+        }
+        
+        function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (email && password) {
+                // In a real application, you would validate credentials server-side
+                // For demo purposes, we'll just redirect to the IPO listings page
+                window.location.href = "ipolisting.html";
+            }
+        }
+    </script>
+</body>
+</html>
