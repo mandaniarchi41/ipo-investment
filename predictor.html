@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered IPO Success Predictor 🤖</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3a5998;
+            --secondary: #4e71ba;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            --border-radius: 10px;
+            --transition: all 0.3s ease-in-out;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(5px);
+            position: relative;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: bounceIn 1.5s ease-in-out;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        .predictor-form {
+            padding: 30px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 8px;
+            transition: color var(--transition);
+        }
+
+        .form-group:hover label {
+            color: var(--primary);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--light);
+            border-radius: var(--border-radius);
+            font-size: 1em;
+            transition: border-color var(--transition), box-shadow var(--transition);
+            background: #fff;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(58, 89, 152, 0.2);
+            outline: none;
+        }
+
+        .predict-btn {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform var(--transition), box-shadow var(--transition);
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .predict-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .predict-btn:active {
+            transform: translateY(0);
+        }
+
+        #prediction-result,
+        #opening-price-result {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            display: none;
+            text-align: center;
+            animation: slideUp 0.5s ease-out;
+            font-weight: 500;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .success {
+            background: linear-gradient(90deg, #28a745, #218838);
+            color: white;
+            border: 1px solid var(--success);
+        }
+
+        .warning {
+            background: linear-gradient(90deg, #ffc107, #e0a800);
+            color: #333;
+            border: 1px solid var(--warning);
+        }
+
+        .danger {
+            background: linear-gradient(90deg, #dc3545, #c82333);
+            color: white;
+            border: 1px solid var(--danger);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+                width: auto;
+                padding: 15px;
+            }
+            .predict-btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            h2 {
+                font-size: 1.5em;
+            }
+            header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>IPO Success Predictor 🤖</h1>
+            <p>Uses historical data and algorithms to estimate your IPO allotment chances. (Last updated: 01:34 PM PST, March 01, 2025)</p>
+        </header>
+        <div class="predictor-form">
+            <h2>Allotment Chance Predictor</h2>
+            <form id="ipoPredictorForm">
+                <div class="form-group">
+                    <label for="investmentAmount">Investment Amount (₹):</label>
+                    <input type="number" id="investmentAmount" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="ipoType">IPO Type:</label>
+                    <select id="ipoType" required>
+                        <option value="pan">PAN Investment</option>
+                        <option value="ipo">IPO Partnership</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="subscriptionLevel">Subscription Level (times oversubscribed):</label>
+                    <input type="number" id="subscriptionLevel" min="1" step="0.1" required>
+                </div>
+                <button type="submit" class="predict-btn">Predict Allotment Chance</button>
+            </form>
+            <div id="prediction-result"></div><br><br>
+
+            <h2>Opening Price Predictor</h2>
+            <form id="openingPriceForm">
+                <div class="form-group">
+                    <label for="issuePrice">Issue Price (₹):</label>
+                    <input type="number" id="issuePrice" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="issueSize">Issue Size (crore shares):</label>
+                    <input type="number" id="issueSize" min="0" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="totalBids">Total Bids (crore shares):</label>
+                    <input type="number" id="totalBids" min="0" step="0.01" required>
+                </div>
+                <button type="submit" class="predict-btn">Predict Opening Price</button>
+            </form>
+            <div id="opening-price-result"></div>
+        </div>
+    </div>
+
+    <script>
+        // Allotment Chance Predictor with Animation
+        document.getElementById('ipoPredictorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const investmentAmount = parseFloat(document.getElementById('investmentAmount').value);
+            const ipoType = document.getElementById('ipoType').value;
+            const subscriptionLevel = parseFloat(document.getElementById('subscriptionLevel').value);
+            const resultDiv = document.getElementById('prediction-result');
+
+            // Simulated AI prediction logic with smooth transition
+            let allotmentChance = 0;
+            if (investmentAmount <= 20000 && subscriptionLevel <= 2) {
+                allotmentChance = 75;
+            } else if (investmentAmount <= 50000 && subscriptionLevel <= 5) {
+                allotmentChance = 50;
+            } else if (subscriptionLevel > 5) {
+                allotmentChance = 20;
+            } else {
+                allotmentChance = 30;
+            }
+
+            if (ipoType === 'ipo' && subscriptionLevel > 3) {
+                allotmentChance -= 10;
+            }
+
+            allotmentChance = Math.max(0, Math.min(100, allotmentChance));
+
+            // Display result with fade effect
+            resultDiv.style.display = 'block';
+            setTimeout(() => {
+                if (allotmentChance >= 70) {
+                    resultDiv.className = 'success';
+                    resultDiv.textContent = `Great news! Your estimated IPO allotment chance is ${allotmentChance}%. 🎉`;
+                } else if (allotmentChance >= 40) {
+                    resultDiv.className = 'warning';
+                    resultDiv.textContent = `Moderate chance! Your estimated IPO allotment chance is ${allotmentChance}%. Consider adjusting your strategy. ⚠️`;
+                } else {
+                    resultDiv.className = 'danger';
+                    resultDiv.textContent = `Low chance! Your estimated IPO allotment chance is ${allotmentChance}%. High subscription may impact results. 🚨`;
+                }
+            }, 200);
+        });
+
+        // Opening Price Predictor with Validation and Animation
+        document.getElementById('openingPriceForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const issuePrice = parseFloat(document.getElementById('issuePrice').value);
+            const issueSize = parseFloat(document.getElementById('issueSize').value);
+            const totalBids = parseFloat(document.getElementById('totalBids').value);
+            const resultDiv = document.getElementById('opening-price-result');
+
+            // Input validation
+            if (issuePrice <= 0 || issueSize <= 0 || totalBids <= 0) {
+                resultDiv.style.display = 'block';
+                setTimeout(() => {
+                    resultDiv.className = 'danger';
+                    resultDiv.textContent = 'Error: Please enter positive numbers for all fields. 🚫';
+                }, 200);
+                return;
+            }
+
+            // Calculate subscription rate
+            const subscriptionRate = totalBids / issueSize;
+
+            // Calculate oversubscription factor
+            const oversubscriptionFactor = subscriptionRate - 1;
+
+            // Calculate predicted opening price
+            const openingPrice = issuePrice * (1 + oversubscriptionFactor / 10);
+
+            // Display result with fade effect
+            resultDiv.style.display = 'block';
+            setTimeout(() => {
+                resultDiv.className = 'success';
+                resultDiv.textContent = `Predicted Opening Price: ₹${openingPrice.toFixed(2)} (Issue Price: ₹${issuePrice}, Subscription Rate: ${subscriptionRate.toFixed(1)}x, Oversubscription Factor: ${oversubscriptionFactor.toFixed(1)}) 🎯`;
+            }, 200);
+        });
+
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Input field focus animation
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.style.transform = 'scale(1.02)';
+                this.style.boxShadow = '0 0 10px rgba(58, 89, 152, 0.3)';
+            });
+            input.addEventListener('blur', function() {
+                this.style.transform = 'scale(1)';
+                this.style.boxShadow = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
