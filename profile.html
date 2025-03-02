@@ -27,6 +27,7 @@
         body {
             background-color: #f0f2f5;
             color: #333;
+            position: relative;
         }
         
         .container {
@@ -374,7 +375,15 @@
             background-color: var(--light);
         }
         
-        /* Chat System Styles */
+        .btn-chat {
+            background-color: var(--info);
+            color: white;
+        }
+        
+        .btn-chat:hover {
+            background-color: #138496;
+        }
+        
         .chat-container {
             background-color: white;
             border-radius: 8px;
@@ -488,29 +497,133 @@
             cursor: pointer;
             border: none;
         }
+        
         .menu-link {
-    text-decoration: none;  /* Removes underline */
-    color: white;  /* Sets font color to white */
-}
+            text-decoration: none;
+            color: white;
+        }
 
-.menu-item {
-    font-size: 16px;  
-    font-weight: bold;
-    padding: 10px 15px;  /* Adds some spacing for better appearance */
-    transition: 0.3s ease-in-out;  /* Smooth transition effect */
-}
+        .menu-item {
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 15px;
+            transition: 0.3s ease-in-out;
+        }
 
-.menu-item:hover {
-    color:#3a5998;  /* Changes text color on hover */
-    background-color: rgba(255, 255, 255, 0.2);  /* Light background on hover */
-    border-radius: 5px;  /* Slightly rounded edges */
-}
+        .menu-item:hover {
+            color: #3a5998;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+        }
 
         .chat-send:hover {
             background-color: var(--secondary);
         }
         
-        /* Responsive */
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            width: 300px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .modal-success {
+            color: var(--success);
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .modal-message {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .modal-btn {
+            padding: 8px 20px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .modal-btn:hover {
+            background-color: var(--secondary);
+        }
+                .request-actions {
+            display: flex;
+            gap: 8px; /* Adds space between buttons */
+        }
+
+        .btn-outline {
+            background-color:#3a5998;
+            color: white;
+            
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline:hover {
+            background-color:#3a5998;
+            color: white;
+        }
+
+        .btn-primary {
+            background-color: #3b5998; /* Same blue as the upper button */
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #2d4373; /* Slightly darker blue */
+        }
+
+        .btn-chat {
+            background-color: #17a2b8; /* Same as upper Chat button */
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-chat:hover {
+            background-color: #138496; /* Darker shade on hover */
+        }
         @media (max-width: 768px) {
             .main-content {
                 flex-direction: column;
@@ -547,7 +660,6 @@
                         <span class="badge">3</span>
                     </div>
                 </a>
-                
                 <div class="menu-item">
                     <i class="fas fa-bell menu-icon"></i>
                     <span class="badge">5</span>
@@ -561,9 +673,9 @@
             <div class="sidebar">
                 <div class="profile-section">
                     <div class="profile-header">
-                        <div class="profile-pic">RK</div>
+                        <div class="profile-pic">OP</div>
                         <div>
-                            <div class="profile-name">Rahul Kumar</div>
+                            <div class="profile-name">OM Patel</div>
                             <div class="profile-status">Verified Investor</div>
                         </div>
                     </div>
@@ -579,7 +691,7 @@
                         </div>
                         <div class="detail-row">
                             <div class="detail-label">Email</div>
-                            <div class="detail-value">rahul.k@example.com</div>
+                            <div class="detail-value">om.p@example.com</div>
                         </div>
                         <div class="detail-row">
                             <div class="detail-label">Phone</div>
@@ -636,7 +748,7 @@
                     </div>
                     
                     <div class="request-list">
-                        <div class="request-card" onclick="openChat('Vijay Singh')">
+                        <div class="request-card">
                             <div class="request-header">
                                 <div class="requester-info">
                                     <div class="requester-pic">VS</div>
@@ -665,10 +777,11 @@
                             <div class="request-actions">
                                 <button class="btn btn-outline">Reject</button>
                                 <button class="btn btn-primary">Accept</button>
+                                <button class="btn btn-chat" onclick="openChat('Vijay Singh')">Chat</button>
                             </div>
                         </div>
                         
-                        <div class="request-card" onclick="openChat('Priya Mehta')">
+                        <div class="request-card">
                             <div class="request-header">
                                 <div class="requester-info">
                                     <div class="requester-pic">PM</div>
@@ -696,11 +809,13 @@
                             
                             <div class="request-actions">
                                 <button class="btn btn-outline">Reject</button>
+                                
                                 <button class="btn btn-primary">Accept</button>
+                                <button class="btn-chat" onclick="openChat('Priya Mehta')">Chat</button>
                             </div>
                         </div>
                         
-                        <div class="request-card" onclick="openChat('Amit Sharma')">
+                        <div class="request-card">
                             <div class="request-header">
                                 <div class="requester-info">
                                     <div class="requester-pic">AS</div>
@@ -728,11 +843,13 @@
                             
                             <div class="request-actions">
                                 <button class="btn btn-outline">Reject</button>
+                                
                                 <button class="btn btn-primary">Accept</button>
+                                <button class="btn-chat" onclick="openChat('Amit Sharma')">Chat</button>
                             </div>
                         </div>
                         
-                        <div class="request-card" onclick="openChat('Neha Patel')">
+                        <div class="request-card">
                             <div class="request-header">
                                 <div class="requester-info">
                                     <div class="requester-pic">NP</div>
@@ -760,7 +877,9 @@
                             
                             <div class="request-actions">
                                 <button class="btn btn-outline">Reject</button>
+                                
                                 <button class="btn btn-primary">Accept</button>
+                                <button class="btn-chat" onclick="openChat('Neha Patel')">Chat</button>
                             </div>
                         </div>
                     </div>
@@ -778,40 +897,26 @@
                     </div>
                     
                     <div class="chat-messages" id="chatMessages">
-                        <div class="message received">
-                            <div class="message-content">Hello Rahul, I'm interested in using your PAN for the Tech Solutions IPO application. Are you open to this partnership?</div>
-                            <div class="message-time">9:30 AM</div>
-                        </div>
-                        
-                        <div class="message sent">
-                            <div class="message-content">Hi Vijay, I might be interested. How much are you looking to invest?</div>
-                            <div class="message-time">9:32 AM</div>
-                        </div>
-                        
-                        <div class="message received">
-                            <div class="message-content">I'm planning to invest around ₹14,500. My KYC is all verified and I have submitted the request with details. Let me know if you need any other information.</div>
-                            <div class="message-time">9:35 AM</div>
-                        </div>
-                        
-                        <div class="message sent">
-                            <div class="message-content">That sounds reasonable. I've checked your profile and everything looks good. Have you participated in IPOs before?</div>
-                            <div class="message-time">9:38 AM</div>
-                        </div>
-                        
-                        <div class="message received">
-                            <div class="message-content">Yes, I've participated in 5 IPOs so far and got allotment in 3 of them. This one looks promising with good listing gains potential.</div>
-                            <div class="message-time">9:40 AM</div>
-                        </div>
+                        <!-- Messages will be loaded dynamically -->
                     </div>
                     
                     <div class="chat-input-container">
-                        <input type="text" class="chat-input" placeholder="Type a message...">
-                        <button class="chat-send">
+                        <input type="text" class="chat-input" placeholder="Type a message..." id="chatInput">
+                        <button class="chat-send" id="chatSend">
                             <i class="fas fa-paper-plane"></i>
                         </button>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="actionModal">
+        <div class="modal-content">
+            <div class="modal-success" id="modalIcon">✓</div>
+            <div class="modal-message" id="modalMessage"></div>
+            <button class="modal-btn" onclick="closeModal()">OK</button>
         </div>
     </div>
     
@@ -822,70 +927,170 @@
             tab.addEventListener('click', () => {
                 tabs.forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
-                // Here you would typically load different content based on the tab
             });
         });
-        
-        // Chat Functionality
+
+        // Accept/Reject Modal Handlers
+        const modal = document.getElementById('actionModal');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalIcon = document.getElementById('modalIcon');
+        let currentCard = null; // To store the current card being rejected
+
+        document.querySelectorAll('.request-card').forEach(card => {
+            const requesterName = card.querySelector('.requester-name').textContent;
+            const requestType = card.querySelector('.request-type').textContent.trim();
+            
+            const acceptBtn = card.querySelector('.btn-primary');
+            acceptBtn.addEventListener('click', () => {
+                modalMessage.textContent = `You have accepted the ${requestType} request from ${requesterName}.`;
+                modalIcon.style.color = 'var(--success)';
+                modal.style.display = 'flex';
+            });
+
+            const rejectBtn = card.querySelector('.btn-outline');
+            rejectBtn.addEventListener('click', () => {
+                currentCard = card; // Store the current card
+                modalMessage.textContent = `You have rejected the ${requestType} request from ${requesterName}.`;
+                modalIcon.style.color = 'var(--danger)';
+                modal.style.display = 'flex';
+            });
+        });
+
+        function closeModal() {
+            modal.style.display = 'none';
+            if (currentCard) {
+                currentCard.remove(); // Remove the request card from the DOM
+                currentCard = null; // Reset the current card
+            }
+        }
+
+        // Chat Functionality (Simulated Real-Time with Context-Aware Responses)
         const requestsSection = document.getElementById('requestsSection');
         const chatContainer = document.getElementById('chatContainer');
         const chatPersonName = document.getElementById('chatPersonName');
         const chatPersonInitials = document.getElementById('chatPersonInitials');
         const chatMessages = document.getElementById('chatMessages');
-        const chatInput = document.querySelector('.chat-input');
-        const chatSend = document.querySelector('.chat-send');
-        
-        // Open chat from menu
-        document.getElementById('openChat').addEventListener('click', () => {
-            openChat('Vijay Singh'); // Default to first person
-        });
-        
+        const chatInput = document.getElementById('chatInput');
+        const chatSend = document.getElementById('chatSend');
+        const currentUser = 'Rahul Kumar'; // The logged-in user
+
+        // Load initial messages
+        function loadMessages(recipient) {
+            chatMessages.innerHTML = '';
+            const messages = JSON.parse(localStorage.getItem('chatMessages') || '{}');
+            const chatKey = [currentUser, recipient].sort().join('-');
+            const chatHistory = messages[chatKey] || [];
+            
+            chatHistory.forEach(msg => {
+                appendMessage(msg.sender, msg.content, msg.time);
+            });
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Append a message to the chat
+        function appendMessage(sender, content, time) {
+            const messageElement = document.createElement('div');
+            messageElement.className = `message ${sender === currentUser ? 'sent' : 'received'}`;
+            messageElement.innerHTML = `
+                <div class="message-content">${content}</div>
+                <div class="message-time">${time}</div>
+            `;
+            chatMessages.appendChild(messageElement);
+        }
+
+        // Send message
+        function sendMessage(recipient) {
+            const messageText = chatInput.value.trim().toLowerCase();
+            if (messageText) {
+                const now = new Date();
+                const timeString = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+                
+                // Save to localStorage
+                const messages = JSON.parse(localStorage.getItem('chatMessages') || '{}');
+                const chatKey = [currentUser, recipient].sort().join('-');
+                if (!messages[chatKey]) messages[chatKey] = [];
+                messages[chatKey].push({ sender: currentUser, content: chatInput.value, time: timeString });
+                localStorage.setItem('chatMessages', JSON.stringify(messages));
+
+                // Append to chat
+                appendMessage(currentUser, chatInput.value, timeString);
+                chatInput.value = '';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                // Generate context-aware response
+                setTimeout(() => simulateResponse(recipient, messageText), 2000); // 2-second delay
+            }
+        }
+
+        // Simulate context-aware response
+        function simulateResponse(recipient, userMessage) {
+            let response = '';
+            const now = new Date();
+            const timeString = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+
+            if (userMessage.includes('hii') || userMessage.includes('hello')) {
+                response = 'Hi! How can I assist you today?';
+            } else if (userMessage.includes('interested') && userMessage.includes('ipo')) {
+                response = Math.random() > 0.5 ? 'Yes, I am interested!' : 'No, not at the moment.';
+            } else if (userMessage.includes('details')) {
+                response = 'Sure, the IPO details are: Investment ₹14,500, PAN Limit ₹2,00,000.';
+            } else if (userMessage.includes('proceed')) {
+                response = 'Great! Let’s proceed with the partnership.';
+            } else {
+                response = 'Thanks for your message! Could you please provide more details?';
+            }
+
+            // Save to localStorage
+            const messages = JSON.parse(localStorage.getItem('chatMessages') || '{}');
+            const chatKey = [currentUser, recipient].sort().join('-');
+            if (!messages[chatKey]) messages[chatKey] = [];
+            messages[chatKey].push({ sender: recipient, content: response, time: timeString });
+            localStorage.setItem('chatMessages', JSON.stringify(messages));
+
+            // Append to chat
+            appendMessage(recipient, response, timeString);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Open chat with a user
         function openChat(personName) {
             requestsSection.style.display = 'none';
             chatContainer.style.display = 'flex';
             chatPersonName.textContent = personName;
             const initials = personName.split(' ').map(n => n[0]).join('');
             chatPersonInitials.textContent = initials;
-            
-            // Here you would typically load chat history with this person
+            loadMessages(personName);
+
+            // Start checking for new messages
+            clearInterval(window.chatInterval);
+            window.chatInterval = setInterval(() => loadMessages(personName), 1000); // Check every second
         }
-        
+
         function closeChat() {
             requestsSection.style.display = 'flex';
             chatContainer.style.display = 'none';
+            clearInterval(window.chatInterval);
         }
-        
-        // Send message functionality
-        chatSend.addEventListener('click', sendMessage);
+
+        // Bind send button and input
+        chatSend.addEventListener('click', () => {
+            const recipient = chatPersonName.textContent;
+            sendMessage(recipient);
+        });
         chatInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
-                sendMessage();
+                const recipient = chatPersonName.textContent;
+                sendMessage(recipient);
             }
         });
-        
-        function sendMessage() {
-            const messageText = chatInput.value.trim();
-            if (messageText) {
-                const now = new Date();
-                const timeString = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
-                
-                const messageElement = document.createElement('div');
-                messageElement.className = 'message sent';
-                messageElement.innerHTML = `
-                    <div class="message-content">${messageText}</div>
-                    <div class="message-time">${timeString}</div>
-                `;
-                
-                chatMessages.appendChild(messageElement);
-                chatInput.value = '';
-                
-                // Scroll to bottom
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-                
-                // Here you would typically send the message to a server
-                // and possibly handle a response
-            }
-        }
+
+        // Initial load of existing messages (if any)
+        document.querySelectorAll('.btn-chat').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const personName = e.target.getAttribute('onclick').match(/'([^']+)'/)[1];
+                openChat(personName);
+            });
+        });
     </script>
 </body>
 </html>
