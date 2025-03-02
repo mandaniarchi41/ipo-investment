@@ -507,6 +507,114 @@
             cursor: pointer;
         }
         
+        /* Feedback Modal */
+        .feedback-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feedback-modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .feedback-modal-content h3 {
+            font-size: 1.5em;
+            color: #1e3a8a;
+            margin-bottom: 15px;
+        }
+
+        .rating-container {
+            margin-bottom: 15px;
+            background-color: #e6f0fa;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .rating-container p {
+            font-size: 1em;
+            color: #4a5568;
+            margin-bottom: 5px;
+        }
+
+        .rating-stars {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .rating-stars input {
+            display: none;
+        }
+
+        .rating-stars label {
+            font-size: 24px;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .rating-stars input:checked ~ label,
+        .rating-stars label:hover,
+        .rating-stars label:hover ~ label {
+            color: #f59e0b;
+        }
+
+        .feedback-modal-content textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            resize: vertical;
+            font-size: 1em;
+        }
+
+        .feedback-modal-content button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+
+        .feedback-modal-content button:hover {
+            background-color: #2980b9;
+        }
+
+        .feedback-modal-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #777;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
         /* Responsive Styles */
         @media (max-width: 768px) {
             .connections-list {
@@ -527,6 +635,10 @@
                 margin-top: 1rem;
                 margin-left: 0;
             }
+
+            .feedback-modal-content {
+                width: 90%;
+            }
         }
     </style>
 </head>
@@ -534,16 +646,17 @@
     <!-- Header with Navigation -->
     <header>
         <nav>
-            <div class="logo">FinConnect</div>
+            <div class="logo">IPO Match</div>
             <ul class="nav-links">
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="#" class="active">Connections</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
                 <li><a href="#">Requests</a></li>
                 <li>
-                    <div class="chat-icon" onclick="openChatList()">
-                        <i class="fas fa-comment"></i>
-                        <span class="chat-badge">3</span>
-                    </div>
+                    <a href="chatbox.html">
+                        <div class="chat-icon" onclick="openChatList()">
+                            <i class="fas fa-comment"></i>
+                            <span class="chat-badge">3</span>
+                        </div>
+                    </a>
                 </li>
             </ul>
         </nav>
@@ -576,7 +689,7 @@
 
             <div class="connections-list">
                 <!-- Connection Card 1 -->
-                <div class="connection-card">
+                <div class="connection-card" onclick="openFeedbackModal('Priya Gupta')">
                     <div class="connection-header">
                         <div class="connection-avatar">
                             <i class="fas fa-user"></i>
@@ -585,7 +698,7 @@
                             <h3 class="connection-name">Priya Gupta</h3>
                             <p class="connection-title">Financial Advisor</p>
                         </div>
-                        <div class="connection-message" onclick="openChat('Priya Gupta')">
+                        <div class="connection-message" onclick="openChat('Priya Gupta', event)">
                             <i class="fas fa-comment"></i>
                         </div>
                     </div>
@@ -614,7 +727,7 @@
                 </div>
 
                 <!-- Connection Card 2 -->
-                <div class="connection-card">
+                <div class="connection-card" onclick="openFeedbackModal('Vikram Singh')">
                     <div class="connection-header">
                         <div class="connection-avatar">
                             <i class="fas fa-user"></i>
@@ -623,7 +736,7 @@
                             <h3 class="connection-name">Vikram Singh</h3>
                             <p class="connection-title">Investment Analyst</p>
                         </div>
-                        <div class="connection-message" onclick="openChat('Vikram Singh')">
+                        <div class="connection-message" onclick="openChat('Vikram Singh', event)">
                             <i class="fas fa-comment"></i>
                         </div>
                     </div>
@@ -651,7 +764,7 @@
                 </div>
 
                 <!-- Connection Card 3 -->
-                <div class="connection-card">
+                <div class="connection-card" onclick="openFeedbackModal('Sneha Rao')">
                     <div class="connection-header">
                         <div class="connection-avatar">
                             <i class="fas fa-user"></i>
@@ -660,7 +773,7 @@
                             <h3 class="connection-name">Sneha Rao</h3>
                             <p class="connection-title">Stock Trader</p>
                         </div>
-                        <div class="connection-message" onclick="openChat('Sneha Rao')">
+                        <div class="connection-message" onclick="openChat('Sneha Rao', event)">
                             <i class="fas fa-comment"></i>
                         </div>
                     </div>
@@ -689,7 +802,7 @@
                 </div>
 
                 <!-- Connection Card 4 -->
-                <div class="connection-card">
+                <div class="connection-card" onclick="openFeedbackModal('Amit Kumar')">
                     <div class="connection-header">
                         <div class="connection-avatar">
                             <i class="fas fa-user"></i>
@@ -698,7 +811,7 @@
                             <h3 class="connection-name">Amit Kumar</h3>
                             <p class="connection-title">Tech Investor</p>
                         </div>
-                        <div class="connection-message" onclick="openChat('Amit Kumar')">
+                        <div class="connection-message" onclick="openChat('Amit Kumar', event)">
                             <i class="fas fa-comment"></i>
                         </div>
                     </div>
@@ -726,7 +839,7 @@
                 </div>
 
                 <!-- Connection Card 5 -->
-                <div class="connection-card">
+                <div class="connection-card" onclick="openFeedbackModal('Neha Patel')">
                     <div class="connection-header">
                         <div class="connection-avatar">
                             <i class="fas fa-user"></i>
@@ -735,7 +848,7 @@
                             <h3 class="connection-name">Neha Patel</h3>
                             <p class="connection-title">Financial Planner</p>
                         </div>
-                        <div class="connection-message" onclick="openChat('Neha Patel')">
+                        <div class="connection-message" onclick="openChat('Neha Patel', event)">
                             <i class="fas fa-comment"></i>
                         </div>
                     </div>
@@ -763,7 +876,7 @@
                 </div>
 
                 <!-- Connection Card 6 -->
-                <div class="connection-card">
+                <div class="connection-card" onclick="openFeedbackModal('Rajesh Khanna')">
                     <div class="connection-header">
                         <div class="connection-avatar">
                             <i class="fas fa-user"></i>
@@ -772,7 +885,7 @@
                             <h3 class="connection-name">Rajesh Khanna</h3>
                             <p class="connection-title">Mutual Fund Specialist</p>
                         </div>
-                        <div class="connection-message" onclick="openChat('Rajesh Khanna')">
+                        <div class="connection-message" onclick="openChat('Rajesh Khanna', event)">
                             <i class="fas fa-comment"></i>
                         </div>
                     </div>
@@ -853,46 +966,133 @@
                 </div>
             </div>
             <div class="chat-input">
-                <input type="text" placeholder="Type a message...">
-                <button class="send-btn">Send</button>
+                <input type="text" placeholder="Type a message..." id="chatInput">
+                <button class="send-btn" onclick="sendMessage()">Send</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div id="feedbackModal" class="feedback-modal">
+        <div class="feedback-modal-content">
+            <button class="feedback-modal-close" onclick="closeFeedbackModal()">×</button>
+            <h3>Leave Feedback for <span id="feedbackUserName"></span></h3>
+            <div class="rating-container">
+                <p>How would you rate your overall experience?</p>
+                <div class="rating-stars">
+                    <input type="radio" id="star5" name="rating" value="5"><label for="star5" title="5 stars">★</label>
+                    <input type="radio" id="star4" name="rating" value="4"><label for="star4" title="4 stars">★</label>
+                    <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="3 stars">★</label>
+                    <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="2 stars">★</label>
+                    <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="1 star">★</label>
+                </div>
+            </div>
+            <textarea id="feedbackText" placeholder="Write your review here..."></textarea>
+            <button onclick="submitFeedback()">Submit</button>
         </div>
     </div>
 
     <script>
         // Function to show chat modal
-        const http = require('http');
-        const fs = require('fs');
-        const path = require('path');
+        function openChat(userName, event) {
+            event.stopPropagation(); // Prevent triggering feedback modal
+            const chatModal = document.getElementById('chatModal');
+            const chatUserName = document.getElementById('chatUserName');
+            chatUserName.textContent = userName;
+            chatModal.style.display = 'flex';
+        }
 
-        // Create a server
-        const server = http.createServer((req, res) => {
-            let filePath = path.join(__dirname, req.url === '/' ? 'index.html' : req.url);
+        // Function to close chat modal
+        function closeChat() {
+            const chatModal = document.getElementById('chatModal');
+            chatModal.style.display = 'none';
+        }
 
-            // Determine content type
-            let ext = path.extname(filePath);
-            let contentType = 'text/html';
-            if (ext === '.js') contentType = 'text/javascript';
-            if (ext === '.css') contentType = 'text/css';
+        // Function to send message (placeholder)
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (message) {
+                const chatMessages = document.querySelector('.chat-messages');
+                const now = new Date();
+                const timeString = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message sent';
+                messageDiv.innerHTML = `
+                    <div class="message-bubble">${message}</div>
+                    <div class="message-time">${timeString}</div>
+                `;
+                chatMessages.appendChild(messageDiv);
+                input.value = '';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                // Simulate a reply after 2 seconds
+                setTimeout(() => {
+                    const replyDiv = document.createElement('div');
+                    replyDiv.className = 'message received';
+                    replyDiv.innerHTML = `
+                        <div class="message-bubble">Thanks for your message! I'll get back to you soon.</div>
+                        <div class="message-time">${timeString}</div>
+                    `;
+                    chatMessages.appendChild(replyDiv);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 2000);
+            }
+        }
 
-            // Read and serve the file
-            fs.readFile(filePath, (err, content) => {
-                if (err) {
-                    res.writeHead(404);
-                    res.end('File Not Found');
-                } else {
-                    res.writeHead(200, { 'Content-Type': contentType });
-                    res.end(content, 'utf-8');
+        // Function to show feedback modal
+        function openFeedbackModal(userName) {
+            const feedbackModal = document.getElementById('feedbackModal');
+            const feedbackUserName = document.getElementById('feedbackUserName');
+            feedbackUserName.textContent = userName;
+            feedbackText.value = ''; // Clear previous text
+            // Reset rating
+            document.querySelectorAll('input[name="rating"]').forEach(radio => radio.checked = false);
+            feedbackModal.style.display = 'flex';
+        }
+
+        // Function to close feedback modal
+        function closeFeedbackModal() {
+            const feedbackModal = document.getElementById('feedbackModal');
+            feedbackModal.style.display = 'none';
+        }
+
+        // Function to submit feedback
+        function submitFeedback() {
+            const userName = document.getElementById('feedbackUserName').textContent;
+            const review = document.getElementById('feedbackText').value.trim();
+            const rating = document.querySelector('input[name="rating"]:checked')?.value || null;
+
+            if (!review && !rating) {
+                alert('Please enter a review, a rating, or both before submitting.');
+                return;
+            }
+
+            // Store feedback in localStorage
+            let feedbacks = JSON.parse(localStorage.getItem('userFeedbacks') || '{}');
+            if (!feedbacks[userName]) feedbacks[userName] = [];
+            feedbacks[userName].push({ review, rating });
+            localStorage.setItem('userFeedbacks', JSON.stringify(feedbacks));
+
+            // Update feedback display (not directly visible here, but can be added to connection cards if needed)
+            alert(`Thank you for your feedback for ${userName}! Rating: ${rating || 'N/A'}, Review: ${review || 'No comment'}`);
+            closeFeedbackModal();
+        }
+
+        // Prevent chat modal from opening when clicking feedback
+        document.querySelectorAll('.connection-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                const messageIcon = this.querySelector('.connection-message');
+                if (!messageIcon.contains(e.target)) {
+                    const userName = this.querySelector('.connection-name').textContent;
+                    openFeedbackModal(userName);
                 }
             });
         });
 
-        // Start the server
-        const PORT = 3000;
-        server.listen(PORT, () => {
-            console.log(`Server running on http://localhost:${PORT}`);
-        });
-
+        // Open chat list (placeholder)
+        function openChatList() {
+            alert('Chat list will open here. (Not implemented yet)');
+        }
     </script>
 </body>
 </html>
