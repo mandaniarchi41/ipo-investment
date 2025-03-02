@@ -362,6 +362,23 @@
       font-size: 20px;
       font-weight: bold;
     }
+    
+    /* Add styles for no results message */
+    .no-results {
+      padding: 20px;
+      text-align: center;
+      color: #7f8c8d;
+      font-style: italic;
+    }
+    
+    /* Add transition for smoother filtering */
+    .success-rate-table tbody tr {
+      transition: opacity 0.3s ease;
+    }
+    
+    .success-rate-table tbody tr.hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -395,11 +412,11 @@
     </div>
     
     <div class="filters">
-      <div class="filter-item active">All Users</div>
-      <div class="filter-item">Top Performers (>85%)</div>
-      <div class="filter-item">High Volume (>10 Partnerships)</div>
-      <div class="filter-item">Capital Providers</div>
-      <div class="filter-item">Investors</div>
+      <div class="filter-item active" data-filter="all">All Users</div>
+      <div class="filter-item" data-filter="top-performers">Top Performers (>85%)</div>
+      <div class="filter-item" data-filter="high-volume">High Volume (>10 Partnerships)</div>
+      <div class="filter-item" data-filter="capital-providers">Capital Providers</div>
+      <div class="filter-item" data-filter="investors">Investors</div>
     </div>
     
     <div class="search-container">
@@ -426,7 +443,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr data-name="Rajiv Sharma" data-role="Capital Provider" data-success-rate="92" data-partnerships="12">
             <td>
               <div class="user-profile">
                 <div class="avatar">
@@ -452,7 +469,7 @@
               </div>
             </td>
           </tr>
-          <tr>
+          <tr data-name="Priya Patel" data-role="Investor" data-success-rate="87" data-partnerships="8">
             <td>
               <div class="user-profile">
                 <div class="avatar">
@@ -478,7 +495,7 @@
               </div>
             </td>
           </tr>
-          <tr>
+          <tr data-name="Vikram Mehta" data-role="Capital Provider" data-success-rate="89" data-partnerships="15">
             <td>
               <div class="user-profile">
                 <div class="avatar">
@@ -504,7 +521,7 @@
               </div>
             </td>
           </tr>
-          <tr>
+          <tr data-name="Ananya Desai" data-role="Investor" data-success-rate="76" data-partnerships="5">
             <td>
               <div class="user-profile">
                 <div class="avatar">
@@ -530,7 +547,7 @@
               </div>
             </td>
           </tr>
-          <tr>
+          <tr data-name="Rahul Verma" data-role="Capital Provider" data-success-rate="94" data-partnerships="10">
             <td>
               <div class="user-profile">
                 <div class="avatar">
@@ -558,6 +575,9 @@
           </tr>
         </tbody>
       </table>
+      
+      <!-- Add a no results message that will show when no matches are found -->
+      <div class="no-results hidden">No matching users found</div>
     </div>
     
     <!-- Detailed Metrics for Selected User -->
@@ -640,11 +660,6 @@
                   <td><strong>3.2</strong></td>
                   <td>2.7 (platform avg)</td>
                 </tr>
-                <!-- <tr>
-                  <td>Avg. Processing Time</td>
-                  <td><strong>1.8 days</strong></td>
-                  <td>2.4 days (platform avg)</td>
-                </tr> -->
                 <tr>
                   <td>Total Allotment Value</td>
                   <td><strong>₹14,875,000</strong></td>
@@ -745,5 +760,101 @@
       </div>
     </div>
   </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get references to elements
+      const searchInput = document.querySelector('.search-input');
+      const searchButton = document.querySelector('.search-button');
+      const filterItems = document.querySelectorAll('.filter-item');
+      const tableRows = document.querySelectorAll('.success-rate-table tbody tr');
+      const noResultsMessage = document.querySelector('.no-results');
+      
+      // Initialize showing all rows
+      let currentFilter = 'all';
+      let searchTerm = '';
+      
+      // Function to apply both filter and search
+      function applyFilterAndSearch() {
+        let visibleRowCount = 0;
+        
+        tableRows.forEach(row => {
+          const name = row.getAttribute('data-name').toLowerCase();
+          const role = row.getAttribute('data-role');
+          const successRate = parseFloat(row.getAttribute('data-success-rate'));
+          const partnerships = parseInt(row.getAttribute('data-partnerships'));
+          
+          // Check if row passes the current filter
+          let passesFilter = true;
+          if (currentFilter === 'top-performers') {
+            passesFilter = successRate >= 85;
+          } else if (currentFilter === 'high-volume') {
+            passesFilter = partnerships >= 10;
+          } else if (currentFilter === 'capital-providers') {
+            passesFilter = role === 'Capital Provider';
+          } else if (currentFilter === 'investors') {
+            passesFilter = role === 'Investor';
+          }
+          
+          // Check if row matches the search term
+          const matchesSearch = searchTerm === '' || 
+                               name.includes(searchTerm) || 
+                               role.toLowerCase().includes(searchTerm);
+          
+          // Show or hide the row based on both conditions
+          if (passesFilter && matchesSearch) {
+            row.classList.remove('hidden');
+            visibleRowCount++;
+          } else {
+            row.classList.add('hidden');
+          }
+        });
+        
+        // Show or hide "No results" message
+        if (visibleRowCount === 0) {
+          noResultsMessage.classList.remove('hidden');
+        } else {
+          noResultsMessage.classList.add('hidden');
+        }
+      }
+      
+      // Event listener for filter items
+      filterItems.forEach(item => {
+        item.addEventListener('click', function() {
+          // Remove active class from all filters
+          filterItems.forEach(filter => filter.classList.remove('active'));
+          
+          // Add active class to clicked filter
+          this.classList.add('active');
+          
+          // Update current filter
+          currentFilter = this.getAttribute('data-filter');
+          
+          // Apply filter and search
+          applyFilterAndSearch();
+        });
+      });
+      
+      // Event listener for search button
+      searchButton.addEventListener('click', function() {
+        searchTerm = searchInput.value.toLowerCase().trim();
+        applyFilterAndSearch();
+      });
+      
+      // Event listener for search input (search as you type)
+      searchInput.addEventListener('input', function() {
+        searchTerm = this.value.toLowerCase().trim();
+        applyFilterAndSearch();
+      });
+      
+      // Event listener for Enter key in search input
+      searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          searchTerm = this.value.toLowerCase().trim();
+          applyFilterAndSearch();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
