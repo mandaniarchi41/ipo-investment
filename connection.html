@@ -3,1096 +3,377 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Connections | FinConnect</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/js/all.min.js"></script>
+    <title>IPO Information Assistant</title>
     <style>
-        * {
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
         }
-        
-        body {
-            background-color: #f5f5f5;
-        }
-        
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
         }
-        
-        header {
-            background-color: #3a5998;
-            color: white;
-            padding: 1rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
         }
-        
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .header h1 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
         }
-        
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
+        .header p {
+            color: #64748b;
         }
-        
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-        
-        .nav-links li {
-            margin-left: 1.5rem;
-        }
-        
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        .nav-links a:hover {
-            color: #3498db;
-        }
-        
-        .chat-icon {
-            background-color: #3498db;
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            position: relative;
-        }
-        
-        .chat-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background-color: #e74c3c;
-            color: white;
-            font-size: 12px;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .connections-section {
+        .trending-ipos {
             background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            margin-bottom: 2rem;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
+        .trending-ipos h2 {
+            color: #1e3a8a;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+            margin-top: 0;
         }
-        
-        .section-title {
-            font-size: 1.5rem;
-            color: #333;
-        }
-        
-        .search-container {
-            display: flex;
-            align-items: center;
-            background-color: #f8f9fa;
-            border-radius: 30px;
-            padding: 0.5rem 1rem;
-            width: 300px;
-        }
-        
-        .search-container input {
-            border: none;
-            background: transparent;
-            outline: none;
-            flex: 1;
-            margin-left: 0.5rem;
-        }
-        
-        .filter-dropdown {
-            position: relative;
-            margin-left: 1rem;
-        }
-        
-        .filter-btn {
-            background-color: #f8f9fa;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-        }
-        
-        .filter-btn i {
-            margin-left: 0.5rem;
-        }
-        
-        .filter-dropdown-content {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            min-width: 150px;
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 4px;
-            padding: 0.5rem 0;
-            z-index: 10;
-            display: none;
-        }
-        
-        .filter-dropdown-content a {
-            display: block;
-            padding: 0.5rem 1rem;
-            text-decoration: none;
-            color: #333;
-        }
-        
-        .filter-dropdown-content a:hover {
-            background-color: #f8f9fa;
-        }
-        
-        .filter-dropdown:hover .filter-dropdown-content {
-            display: block;
-        }
-        
-        .connections-list {
+        .ipo-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
+            gap: 20px;
+            margin-top: 20px;
         }
-        
-        .connection-card {
-            background-color: white;
+        .ipo-card {
+            background-color: #f8fafc;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
+            padding: 15px;
+            border-left: 4px solid #3b82f6;
+            transition: transform 0.2s;
         }
-        
-        .connection-card:hover {
+        .ipo-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
         }
-        
-        .connection-header {
-            padding: 1.5rem;
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid #f1f1f1;
+        .ipo-card h3 {
+            margin-top: 0;
+            color: #1e40af;
         }
-        
-        .connection-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: #f1f1f1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 1rem;
-            font-size: 1.5rem;
-            color: #777;
+        .ipo-card p {
+            margin: 5px 0;
+            color: #64748b;
         }
-        
-        .connection-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
+        .ipo-card .price {
+            font-weight: bold;
+            color: #047857;
         }
-        
-        .connection-info {
-            flex: 1;
+        .ipo-card .date {
+            font-style: italic;
         }
-        
-        .connection-name {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-            color: #333;
-        }
-        
-        .connection-title {
-            color: #777;
-            font-size: 0.9rem;
-        }
-        
-        .connection-message {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background-color: #e3f2fd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #3498db;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .connection-message:hover {
-            background-color: #3498db;
-            color: white;
-        }
-        
-        .connection-body {
-            padding: 1.5rem;
-            flex: 1;
-        }
-        
-        .connection-detail {
-            margin-bottom: 1rem;
-        }
-        
-        .connection-detail:last-child {
-            margin-bottom: 0;
-        }
-        
-        .connection-detail label {
-            display: block;
-            font-size: 0.85rem;
-            color: #777;
-            margin-bottom: 0.3rem;
-        }
-        
-        .connection-detail p {
-            color: #333;
-            font-weight: 500;
-        }
-        
-        .connection-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-        
-        .connection-tag {
-            background-color: #f8f9fa;
-            color: #555;
-            padding: 0.3rem 0.7rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-        }
-        
-        .connection-footer {
-            padding: 1rem 1.5rem;
-            border-top: 1px solid #f1f1f1;
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        .connection-type {
-            font-size: 0.85rem;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-weight: 500;
-        }
-        
-        .type-investment {
-            background-color: #e3f2fd;
-            color: #1976d2;
-        }
-        
-        .type-ipo {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-        }
-        
-        .type-general {
-            background-color: #f5f5f5;
-            color: #555;
-        }
-        
-        .connection-date {
-            font-size: 0.85rem;
-            color: #777;
-        }
-        
-        .pagination {
-            display: flex;
-            justify-content: center;
-            margin-top: 2rem;
-        }
-        
-        .pagination-item {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 4px;
-            margin: 0 0.3rem;
-            cursor: pointer;
-            font-weight: 500;
-        }
-        
-        .pagination-item.active {
-            background-color: #3498db;
-            color: white;
-        }
-        
-        .pagination-item:not(.active):hover {
-            background-color: #f1f1f1;
-        }
-        
-        .no-connections {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: #777;
-        }
-        
-        .no-connections i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: #ddd;
-        }
-        
-        .no-connections h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            color: #555;
-        }
-        
-        /* Chat Modal */
-        .chat-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-        
-        .chat-container {
-            width: 500px;
-            max-width: 90%;
-            height: 600px;
-            max-height: 90vh;
+        .chatbot-container {
             background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        
         .chat-header {
-            padding: 1rem;
-            border-bottom: 1px solid #ddd;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            margin-bottom: 20px;
         }
-        
-        .chat-header-user {
-            display: flex;
-            align-items: center;
+        .chat-header h2 {
+            color: #1e3a8a;
+            margin: 0;
+            flex-grow: 1;
         }
-        
-        .chat-header-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #f1f1f1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 1rem;
-            font-size: 1rem;
-            color: #777;
-        }
-        
-        .chat-header-name {
-            font-weight: 600;
-        }
-        
-        .chat-close {
-            background: none;
-            border: none;
-            font-size: 1.2rem;
-            cursor: pointer;
-            color: #777;
-        }
-        
         .chat-messages {
-            flex: 1;
-            padding: 1rem;
+            height: 300px;
             overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .message {
-            margin-bottom: 1rem;
-            max-width: 70%;
-        }
-        
-        .message.received {
-            align-self: flex-start;
-        }
-        
-        .message.sent {
-            align-self: flex-end;
-            margin-left: auto;
-        }
-        
-        .message-bubble {
-            padding: 0.8rem 1rem;
+            padding: 15px;
+            background-color: #f8fafc;
             border-radius: 8px;
+            margin-bottom: 20px;
         }
-        
-        .message.received .message-bubble {
-            background-color: #f1f0f0;
+        .message {
+            margin-bottom: 15px;
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            line-height: 1.4;
         }
-        
-        .message.sent .message-bubble {
-            background-color: #3498db;
+        .user-message {
+            background-color: #3b82f6;
             color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
         }
-        
-        .message-time {
-            font-size: 0.7rem;
-            color: #777;
-            margin-top: 0.3rem;
-            text-align: right;
+        .bot-message {
+            background-color: #e2e8f0;
+            color: #334155;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
         }
-        
         .chat-input {
-            padding: 1rem;
-            border-top: 1px solid #ddd;
             display: flex;
+            gap: 10px;
         }
-        
         .chat-input input {
-            flex: 1;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 16px;
             outline: none;
         }
-        
-        .send-btn {
-            padding: 0.8rem 1.5rem;
-            background-color: #3498db;
+        .chat-input input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        .chat-input button {
+            background-color: #1e40af;
             color: white;
             border: none;
-            border-radius: 4px;
-            margin-left: 0.5rem;
+            border-radius: 8px;
+            padding: 0 20px;
+            font-size: 16px;
             cursor: pointer;
+            transition: background-color 0.2s;
         }
-        
-        /* Feedback Modal */
-        .feedback-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
+        .chat-input button:hover {
+            background-color: #1e3a8a;
         }
-
-        .feedback-modal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            width: 400px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            animation: fadeIn 0.3s ease-in;
+        .chat-input button:disabled {
+            background-color: #94a3b8;
+            cursor: not-allowed;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
         }
-
-        .feedback-modal-content h3 {
-            font-size: 1.5em;
-            color: #1e3a8a;
-            margin-bottom: 15px;
-        }
-
-        .rating-container {
-            margin-bottom: 15px;
-            background-color: #e6f0fa;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .rating-container p {
-            font-size: 1em;
-            color: #4a5568;
-            margin-bottom: 5px;
-        }
-
-        .rating-stars {
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-        }
-
-        .rating-stars input {
-            display: none;
-        }
-
-        .rating-stars label {
-            font-size: 24px;
-            color: #ccc;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .rating-stars input:checked ~ label,
-        .rating-stars label:hover,
-        .rating-stars label:hover ~ label {
-            color: #f59e0b;
-        }
-
-        .feedback-modal-content textarea {
-            width: 100%;
-            height: 100px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            resize: vertical;
-            font-size: 1em;
-        }
-
-        .feedback-modal-content button {
-            background-color: #3498db;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: background-color 0.3s;
-        }
-
-        .feedback-modal-content button:hover {
-            background-color: #2980b9;
-        }
-
-        .feedback-modal-close {
-            background: none;
-            border: none;
-            font-size: 1.2rem;
-            cursor: pointer;
-            color: #777;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            .connections-list {
-                grid-template-columns: 1fr;
-            }
-            
-            .section-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .search-container {
-                width: 100%;
-                margin-top: 1rem;
-            }
-            
-            .filter-dropdown {
-                margin-top: 1rem;
-                margin-left: 0;
-            }
-
-            .feedback-modal-content {
-                width: 90%;
-            }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <!-- Header with Navigation -->
-    <header>
-        <nav>
-            <div class="logo">IPO Match</div>
-            <ul class="nav-links">
-                <li><a href="dashboard.html">Dashboard</a></li>
-                <li><a href="#">Requests</a></li>
-                <li>
-                    <a href="chatbox.html">
-                        <div class="chat-icon" onclick="openChatList()">
-                            <i class="fas fa-comment"></i>
-                            <span class="chat-badge">3</span>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </header>
-
     <div class="container">
-        <!-- Connections Section -->
-        <div class="connections-section">
-            <div class="section-header">
-                <h2 class="section-title">My Connections</h2>
-                <div style="display: flex;">
-                    <div class="search-container">
-                        <i class="fas fa-search"></i>
-                        <input type="text" placeholder="Search connections...">
-                    </div>
-                    <div class="filter-dropdown">
-                        <button class="filter-btn">
-                            Filter <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="filter-dropdown-content">
-                            <a href="#">All Connections</a>
-                            <a href="#">Investment Partners</a>
-                            <a href="#">IPO Partners</a>
-                            <a href="#">Recent First</a>
-                            <a href="#">Oldest First</a>
-                        </div>
-                    </div>
+        <div class="header">
+            <h1>IPO Match</h1>
+            <p>Get the latest information about Initial Public Offerings</p>
+        </div>
+        
+        <div class="trending-ipos">
+            <h2>Trending IPOs</h2>
+            <div class="ipo-grid">
+                <div class="ipo-card">
+                    <h3>TechFusion Inc.</h3>
+                    <p class="price">Price Range: $24-28</p>
+                    <p>Expected Listing: March 15, 2025</p>
+                    <p>Sector: AI & Cloud Computing</p>
+                    <p>Underwriters: Goldman Sachs, Morgan Stanley</p>
                 </div>
-            </div>
-
-            <div class="connections-list">
-                <!-- Connection Card 1 -->
-                <div class="connection-card" onclick="openFeedbackModal('Priya Gupta')">
-                    <div class="connection-header">
-                        <div class="connection-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="connection-info">
-                            <h3 class="connection-name">Priya Gupta</h3>
-                            <p class="connection-title">Financial Advisor</p>
-                        </div>
-                        <div class="connection-message" onclick="openChat('Priya Gupta', event)">
-                            <i class="fas fa-comment"></i>
-                        </div>
-                    </div>
-                    <div class="connection-body">
-                        <div class="connection-detail">
-                            <label>Email</label>
-                            <p>priya.gupta@example.com</p>
-                        </div>
-                        <div class="connection-detail">
-                            <label>Investment Areas</label>
-                            <div class="connection-tags">
-                                <span class="connection-tag">Mutual Funds</span>
-                                <span class="connection-tag">Bonds</span>
-                                <span class="connection-tag">ETFs</span>
-                            </div>
-                        </div>
-                        <div class="connection-detail">
-                            <label>Joint Investments</label>
-                            <p>2 Active</p>
-                        </div>
-                    </div>
-                    <div class="connection-footer">
-                        <span class="connection-type type-investment">Investment Partner</span>
-                        <span class="connection-date">Since: 11/10/2024</span>
-                    </div>
+                <div class="ipo-card">
+                    <h3>GreenEnergy Solutions</h3>
+                    <p class="price">Price Range: $18-22</p>
+                    <p>Expected Listing: March 10, 2025</p>
+                    <p>Sector: Renewable Energy</p>
+                    <p>Underwriters: JP Morgan, Bank of America</p>
                 </div>
-
-                <!-- Connection Card 2 -->
-                <div class="connection-card" onclick="openFeedbackModal('Vikram Singh')">
-                    <div class="connection-header">
-                        <div class="connection-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="connection-info">
-                            <h3 class="connection-name">Vikram Singh</h3>
-                            <p class="connection-title">Investment Analyst</p>
-                        </div>
-                        <div class="connection-message" onclick="openChat('Vikram Singh', event)">
-                            <i class="fas fa-comment"></i>
-                        </div>
-                    </div>
-                    <div class="connection-body">
-                        <div class="connection-detail">
-                            <label>Email</label>
-                            <p>vikram.singh@example.com</p>
-                        </div>
-                        <div class="connection-detail">
-                            <label>Investment Areas</label>
-                            <div class="connection-tags">
-                                <span class="connection-tag">IPO</span>
-                                <span class="connection-tag">Stocks</span>
-                            </div>
-                        </div>
-                        <div class="connection-detail">
-                            <label>Joint Investments</label>
-                            <p>1 Active</p>
-                        </div>
-                    </div>
-                    <div class="connection-footer">
-                        <span class="connection-type type-ipo">IPO Partner</span>
-                        <span class="connection-date">Since: 05/01/2025</span>
-                    </div>
-                </div>
-
-                <!-- Connection Card 3 -->
-                <div class="connection-card" onclick="openFeedbackModal('Sneha Rao')">
-                    <div class="connection-header">
-                        <div class="connection-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="connection-info">
-                            <h3 class="connection-name">Sneha Rao</h3>
-                            <p class="connection-title">Stock Trader</p>
-                        </div>
-                        <div class="connection-message" onclick="openChat('Sneha Rao', event)">
-                            <i class="fas fa-comment"></i>
-                        </div>
-                    </div>
-                    <div class="connection-body">
-                        <div class="connection-detail">
-                            <label>Email</label>
-                            <p>sneha.rao@example.com</p>
-                        </div>
-                        <div class="connection-detail">
-                            <label>Investment Areas</label>
-                            <div class="connection-tags">
-                                <span class="connection-tag">Stocks</span>
-                                <span class="connection-tag">Derivatives</span>
-                                <span class="connection-tag">Mutual Funds</span>
-                            </div>
-                        </div>
-                        <div class="connection-detail">
-                            <label>Joint Investments</label>
-                            <p>3 Active</p>
-                        </div>
-                    </div>
-                    <div class="connection-footer">
-                        <span class="connection-type type-investment">Investment Partner</span>
-                        <span class="connection-date">Since: 18/12/2024</span>
-                    </div>
-                </div>
-
-                <!-- Connection Card 4 -->
-                <div class="connection-card" onclick="openFeedbackModal('Amit Kumar')">
-                    <div class="connection-header">
-                        <div class="connection-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="connection-info">
-                            <h3 class="connection-name">Amit Kumar</h3>
-                            <p class="connection-title">Tech Investor</p>
-                        </div>
-                        <div class="connection-message" onclick="openChat('Amit Kumar', event)">
-                            <i class="fas fa-comment"></i>
-                        </div>
-                    </div>
-                    <div class="connection-body">
-                        <div class="connection-detail">
-                            <label>Email</label>
-                            <p>amit.kumar@example.com</p>
-                        </div>
-                        <div class="connection-detail">
-                            <label>Investment Areas</label>
-                            <div class="connection-tags">
-                                <span class="connection-tag">Tech IPOs</span>
-                                <span class="connection-tag">Startups</span>
-                            </div>
-                        </div>
-                        <div class="connection-detail">
-                            <label>Joint Investments</label>
-                            <p>2 Active</p>
-                        </div>
-                    </div>
-                    <div class="connection-footer">
-                        <span class="connection-type type-ipo">IPO Partner</span>
-                        <span class="connection-date">Since: 20/02/2025</span>
-                    </div>
-                </div>
-
-                <!-- Connection Card 5 -->
-                <div class="connection-card" onclick="openFeedbackModal('Neha Patel')">
-                    <div class="connection-header">
-                        <div class="connection-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="connection-info">
-                            <h3 class="connection-name">Neha Patel</h3>
-                            <p class="connection-title">Financial Planner</p>
-                        </div>
-                        <div class="connection-message" onclick="openChat('Neha Patel', event)">
-                            <i class="fas fa-comment"></i>
-                        </div>
-                    </div>
-                    <div class="connection-body">
-                        <div class="connection-detail">
-                            <label>Email</label>
-                            <p>neha.patel@example.com</p>
-                        </div>
-                        <div class="connection-detail">
-                            <label>Investment Areas</label>
-                            <div class="connection-tags">
-                                <span class="connection-tag">ETFs</span>
-                                <span class="connection-tag">Index Funds</span>
-                            </div>
-                        </div>
-                        <div class="connection-detail">
-                            <label>Joint Investments</label>
-                            <p>1 Active</p>
-                        </div>
-                    </div>
-                    <div class="connection-footer">
-                        <span class="connection-type type-investment">Investment Partner</span>
-                        <span class="connection-date">Since: 22/02/2025</span>
-                    </div>
-                </div>
-
-                <!-- Connection Card 6 -->
-                <div class="connection-card" onclick="openFeedbackModal('Rajesh Khanna')">
-                    <div class="connection-header">
-                        <div class="connection-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="connection-info">
-                            <h3 class="connection-name">Rajesh Khanna</h3>
-                            <p class="connection-title">Mutual Fund Specialist</p>
-                        </div>
-                        <div class="connection-message" onclick="openChat('Rajesh Khanna', event)">
-                            <i class="fas fa-comment"></i>
-                        </div>
-                    </div>
-                    <div class="connection-body">
-                        <div class="connection-detail">
-                            <label>Email</label>
-                            <p>rajesh.khanna@example.com</p>
-                        </div>
-                        <div class="connection-detail">
-                            <label>Investment Areas</label>
-                            <div class="connection-tags">
-                                <span class="connection-tag">Mutual Funds</span>
-                                <span class="connection-tag">SIPs</span>
-                            </div>
-                        </div>
-                        <div class="connection-detail">
-                            <label>Joint Investments</label>
-                            <p>1 Pending</p>
-                        </div>
-                    </div>
-                    <div class="connection-footer">
-                        <span class="connection-type type-investment">Investment Partner</span>
-                        <span class="connection-date">Since: 19/02/2025</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pagination">
-                <div class="pagination-item active">1</div>
-                <div class="pagination-item">2</div>
-                <div class="pagination-item">3</div>
-                <div class="pagination-item">
-                    <i class="fas fa-chevron-right"></i>
+                <div class="ipo-card">
+                    <h3>MedTech Innovations</h3>
+                    <p class="price">Price Range: $32-36</p>
+                    <p>Expected Listing: March 25, 2025</p>
+                    <p>Sector: Healthcare Technology</p>
+                    <p>Underwriters: Citigroup, Deutsche Bank</p>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Chat Modal -->
-    <div id="chatModal" class="chat-modal">
-        <div class="chat-container">
+        
+        <div class="chatbot-container">
             <div class="chat-header">
-                <div class="chat-header-user">
-                    <div class="chat-header-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="chat-header-name" id="chatUserName">Priya Gupta</div>
-                </div>
-                <button class="chat-close" onclick="closeChat()">
-                    <i class="fas fa-times"></i>
-                </button>
+                <h2>IPO Assistant</h2>
             </div>
-            <div class="chat-messages">
-                <!-- Messages will be dynamically added -->
-                <div class="message received">
-                    <div class="message-bubble">
-                        Hi there! I was looking at that ETF investment opportunity we discussed.
-                    </div>
-                    <div class="message-time">10:30 AM</div>
-                </div>
-                <div class="message sent">
-                    <div class="message-bubble">
-                        Yes, I've been researching it too. The returns look promising!
-                    </div>
-                    <div class="message-time">10:32 AM</div>
-                </div>
-                <div class="message received">
-                    <div class="message-bubble">
-                        Have you looked at the expense ratio? It's quite competitive compared to similar funds.
-                    </div>
-                    <div class="message-time">10:33 AM</div>
-                </div>
-                <div class="message sent">
-                    <div class="message-bubble">
-                        Absolutely. At 0.08%, it's one of the lowest in the category. Are you thinking of increasing your allocation?
-                    </div>
-                    <div class="message-time">10:35 AM</div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    Hello! I'm your IPO Assistant. Ask me anything about IPOs, investment strategies, upcoming offerings, or market trends.
                 </div>
             </div>
             <div class="chat-input">
-                <input type="text" placeholder="Type a message..." id="chatInput">
-                <button class="send-btn" onclick="sendMessage()">Send</button>
+                <input type="text" id="userInput" placeholder="Ask about IPOs..." />
+                <button id="sendButton">Send</button>
             </div>
-        </div>
-    </div>
-
-    <!-- Feedback Modal -->
-    <div id="feedbackModal" class="feedback-modal">
-        <div class="feedback-modal-content">
-            <button class="feedback-modal-close" onclick="closeFeedbackModal()">×</button>
-            <h3>Leave Feedback for <span id="feedbackUserName"></span></h3>
-            <div class="rating-container">
-                <p>How would you rate your overall experience?</p>
-                <div class="rating-stars">
-                    <input type="radio" id="star5" name="rating" value="5"><label for="star5" title="5 stars">★</label>
-                    <input type="radio" id="star4" name="rating" value="4"><label for="star4" title="4 stars">★</label>
-                    <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="3 stars">★</label>
-                    <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="2 stars">★</label>
-                    <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="1 star">★</label>
-                </div>
-            </div>
-            <textarea id="feedbackText" placeholder="Write your review here..."></textarea>
-            <button onclick="submitFeedback()">Submit</button>
         </div>
     </div>
 
     <script>
-        // Function to show chat modal
-        function openChat(userName, event) {
-            event.stopPropagation(); // Prevent triggering feedback modal
-            const chatModal = document.getElementById('chatModal');
-            const chatUserName = document.getElementById('chatUserName');
-            chatUserName.textContent = userName;
-            chatModal.style.display = 'flex';
+        // Sample IPO information database
+        const ipoDatabase = {
+            "ipo basics": "An Initial Public Offering (IPO) is when a private company first sells shares to the public. This process helps companies raise capital for expansion, pay off debt, or provide liquidity to early investors.",
+            
+            "ipo process": "The IPO process typically includes: 1) Selecting underwriters, 2) Due diligence and SEC filing, 3) Marketing through roadshows, 4) Pricing the offering, 5) Allocation of shares, and 6) Beginning to trade on public exchanges.",
+            
+            "ipo advantages": "IPO advantages include: access to capital, increased public awareness, easier future financing, liquidity for founders and early investors, and potential acquisition currency.",
+            
+            "ipo disadvantages": "IPO disadvantages include: expensive process, regulatory requirements and disclosures, market volatility, pressure for short-term results, potential loss of control, and lockup periods.",
+            
+            "upcoming ipos": "Upcoming IPOs for March 2025 include: TechFusion Inc. (AI & Cloud, March 15), GreenEnergy Solutions (Renewable Energy, March 10), MedTech Innovations (Healthcare Tech, March 25), Consumer Direct (E-commerce, March 20), and DataSecurity Pro (Cybersecurity, March 30).",
+            
+            "techfusion": "TechFusion Inc. is planning to go public on March 15, 2025. They specialize in AI and cloud computing solutions. The price range is $24-28 per share, with Goldman Sachs and Morgan Stanley as lead underwriters. They plan to raise approximately $500M to fund expansion into new markets.",
+            
+            "greenenergy": "GreenEnergy Solutions is expected to list on March 10, 2025. They focus on renewable energy technology, particularly solar and hydrogen storage solutions. Their price range is $18-22 per share, with JP Morgan and Bank of America as underwriters. Their IPO size is estimated at $350M.",
+            
+            "medtech": "MedTech Innovations plans to IPO on March 25, 2025. They develop AI-powered diagnostic tools for healthcare providers. Their price range is $32-36, with Citigroup and Deutsche Bank leading the offering. They're looking to raise $400M to fund clinical trials and market expansion.",
+            
+            "ipo investment strategy": "When investing in IPOs, consider: 1) Researching the company's fundamentals, 2) Reviewing the prospectus carefully, 3) Assessing the management team, 4) Evaluating the offering price, 5) Understanding lockup periods, and 6) Being prepared for volatility. Many financial advisors suggest waiting until after the lockup period expires before investing.",
+            
+            "ipo performance trends": "Historically, IPOs often see price volatility in their first year of trading. In recent trends, technology and healthcare IPOs have shown strong performance in 2024-2025, while consumer goods IPOs have been more mixed. About 60% of IPOs in 2024 traded above their offering price after six months.",
+            
+            "lockup period": "A lockup period is a predetermined timeframe following an IPO during which company insiders and early investors cannot sell their shares. Typically ranging from 90-180 days, lockup periods prevent flooding the market with too many shares immediately after going public."
+        };
+
+        // Function to get response from our simple "AI" system
+        function getIPOResponse(query) {
+            // Convert query to lowercase for matching
+            const lowerQuery = query.toLowerCase();
+            
+            // Check for direct matches in our database
+            for (const key in ipoDatabase) {
+                if (lowerQuery.includes(key)) {
+                    return ipoDatabase[key];
+                }
+            }
+            
+            // Handle general IPO questions
+            if (lowerQuery.includes("ipo") || lowerQuery.includes("public offering")) {
+                if (lowerQuery.includes("what is") || lowerQuery.includes("definition")) {
+                    return ipoDatabase["ipo basics"];
+                }
+                if (lowerQuery.includes("how") || lowerQuery.includes("process")) {
+                    return ipoDatabase["ipo process"];
+                }
+                if (lowerQuery.includes("advantage") || lowerQuery.includes("benefit")) {
+                    return ipoDatabase["ipo advantages"];
+                }
+                if (lowerQuery.includes("disadvantage") || lowerQuery.includes("risk") || lowerQuery.includes("downside")) {
+                    return ipoDatabase["ipo disadvantages"];
+                }
+                if (lowerQuery.includes("upcoming") || lowerQuery.includes("next") || lowerQuery.includes("future")) {
+                    return ipoDatabase["upcoming ipos"];
+                }
+                if (lowerQuery.includes("strategy") || lowerQuery.includes("invest") || lowerQuery.includes("buy")) {
+                    return ipoDatabase["ipo investment strategy"];
+                }
+                if (lowerQuery.includes("performance") || lowerQuery.includes("trend")) {
+                    return ipoDatabase["ipo performance trends"];
+                }
+                if (lowerQuery.includes("lockup") || lowerQuery.includes("lock up") || lowerQuery.includes("lock-up")) {
+                    return ipoDatabase["lockup period"];
+                }
+            }
+            
+            // Check for company specific queries
+            if (lowerQuery.includes("techfusion") || lowerQuery.includes("tech fusion")) {
+                return ipoDatabase["techfusion"];
+            }
+            if (lowerQuery.includes("greenenergy") || lowerQuery.includes("green energy")) {
+                return ipoDatabase["greenenergy"];
+            }
+            if (lowerQuery.includes("medtech") || lowerQuery.includes("med tech")) {
+                return ipoDatabase["medtech"];
+            }
+            
+            // Default response if no match found
+            return "I don't have specific information about that. You can ask about IPO basics, the IPO process, advantages and disadvantages, upcoming IPOs, investment strategies, or specific companies like TechFusion, GreenEnergy, or MedTech.";
         }
 
-        // Function to close chat modal
-        function closeChat() {
-            const chatModal = document.getElementById('chatModal');
-            chatModal.style.display = 'none';
-        }
-
-        // Function to send message (placeholder)
-        function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const message = input.value.trim();
-            if (message) {
-                const chatMessages = document.querySelector('.chat-messages');
-                const now = new Date();
-                const timeString = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+        // Chat functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatMessages = document.getElementById('chatMessages');
+            const userInput = document.getElementById('userInput');
+            const sendButton = document.getElementById('sendButton');
+            
+            // Function to add a message to the chat
+            function addMessage(text, isUser) {
                 const messageDiv = document.createElement('div');
-                messageDiv.className = 'message sent';
-                messageDiv.innerHTML = `
-                    <div class="message-bubble">${message}</div>
-                    <div class="message-time">${timeString}</div>
-                `;
+                messageDiv.classList.add('message');
+                messageDiv.classList.add(isUser ? 'user-message' : 'bot-message');
+                messageDiv.textContent = text;
                 chatMessages.appendChild(messageDiv);
-                input.value = '';
                 chatMessages.scrollTop = chatMessages.scrollHeight;
-                // Simulate a reply after 2 seconds
-                setTimeout(() => {
-                    const replyDiv = document.createElement('div');
-                    replyDiv.className = 'message received';
-                    replyDiv.innerHTML = `
-                        <div class="message-bubble">Thanks for your message! I'll get back to you soon.</div>
-                        <div class="message-time">${timeString}</div>
-                    `;
-                    chatMessages.appendChild(replyDiv);
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-                }, 2000);
             }
-        }
-
-        // Function to show feedback modal
-        function openFeedbackModal(userName) {
-            const feedbackModal = document.getElementById('feedbackModal');
-            const feedbackUserName = document.getElementById('feedbackUserName');
-            feedbackUserName.textContent = userName;
-            feedbackText.value = ''; // Clear previous text
-            // Reset rating
-            document.querySelectorAll('input[name="rating"]').forEach(radio => radio.checked = false);
-            feedbackModal.style.display = 'flex';
-        }
-
-        // Function to close feedback modal
-        function closeFeedbackModal() {
-            const feedbackModal = document.getElementById('feedbackModal');
-            feedbackModal.style.display = 'none';
-        }
-
-        // Function to submit feedback
-        function submitFeedback() {
-            const userName = document.getElementById('feedbackUserName').textContent;
-            const review = document.getElementById('feedbackText').value.trim();
-            const rating = document.querySelector('input[name="rating"]:checked')?.value || null;
-
-            if (!review && !rating) {
-                alert('Please enter a review, a rating, or both before submitting.');
-                return;
+            
+            // Function to handle user sending a message
+            function handleSend() {
+                const message = userInput.value.trim();
+                if (message) {
+                    // Add user message to chat
+                    addMessage(message, true);
+                    userInput.value = '';
+                    
+                    // Disable button and show loading state
+                    sendButton.disabled = true;
+                    sendButton.innerHTML = '<span class="loading"></span>';
+                    
+                    // Simulate API call delay
+                    setTimeout(() => {
+                        // Get response from our simple AI system
+                        const response = getIPOResponse(message);
+                        
+                        // Add bot response to chat
+                        addMessage(response, false);
+                        
+                        // Reset button
+                        sendButton.disabled = false;
+                        sendButton.textContent = 'Send';
+                    }, 1000);
+                }
             }
-
-            // Store feedback in localStorage
-            let feedbacks = JSON.parse(localStorage.getItem('userFeedbacks') || '{}');
-            if (!feedbacks[userName]) feedbacks[userName] = [];
-            feedbacks[userName].push({ review, rating });
-            localStorage.setItem('userFeedbacks', JSON.stringify(feedbacks));
-
-            // Update feedback display (not directly visible here, but can be added to connection cards if needed)
-            alert(`Thank you for your feedback for ${userName}! Rating: ${rating || 'N/A'}, Review: ${review || 'No comment'}`);
-            closeFeedbackModal();
-        }
-
-        // Prevent chat modal from opening when clicking feedback
-        document.querySelectorAll('.connection-card').forEach(card => {
-            card.addEventListener('click', function(e) {
-                const messageIcon = this.querySelector('.connection-message');
-                if (!messageIcon.contains(e.target)) {
-                    const userName = this.querySelector('.connection-name').textContent;
-                    openFeedbackModal(userName);
+            
+            // Event listeners
+            sendButton.addEventListener('click', handleSend);
+            userInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    handleSend();
                 }
             });
         });
-
-        // Open chat list (placeholder)
-        function openChatList() {
-            alert('Chat list will open here. (Not implemented yet)');
+        
+        // Note: In a real implementation, you would replace the getIPOResponse function
+        // with an actual API call to an AI service. The code would look something like:
+        /*
+        async function getAIResponse(query) {
+            try {
+                const response = await fetch('https://api.openai.com/v1/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer YOUR_API_KEY_HERE'
+                    },
+                    body: JSON.stringify({
+                        model: "gpt-3.5-turbo",
+                        messages: [
+                            {role: "system", content: "You are an IPO information assistant. Provide helpful information about IPOs."},
+                            {role: "user", content: query}
+                        ],
+                        temperature: 0.7
+                    })
+                });
+                const data = await response.json();
+                return data.choices[0].message.content;
+            } catch (error) {
+                console.error('Error:', error);
+                return "Sorry, I'm having trouble connecting to my knowledge base right now. Please try again later.";
+            }
         }
+        */
     </script>
 </body>
 </html>
